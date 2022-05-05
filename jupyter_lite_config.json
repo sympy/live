@@ -1,5 +1,6 @@
 {
   "LiteBuildConfig": {
-    "app": ["repl"]
+    "app": ["repl"],
+    "no_unused_shared_packages": true
   }
 }
