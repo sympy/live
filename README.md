@@ -7,7 +7,7 @@ files used by the new SymPy Live. The code is deployed as a static site to GitHu
 
 ## ✨ Try it in your browser ✨
 
-- **https://ivanistheone.github.io/live/repl/index.html**
+- **https://sympy.github.io/live/repl/index.html?toolbar=1&kernel=python**
 
 
 ## Requirements
