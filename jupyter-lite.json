@@ -5,6 +5,6 @@
     "appUrl": "./repl",
     "disabledExtensions": [
       "@jupyter-widgets/jupyterlab-manager"
-    ],
+    ]
   }
 }
