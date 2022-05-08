@@ -9,6 +9,10 @@ files used by the new SymPy Live. The code is deployed as a static site to GitHu
 
 - **https://sympy.github.io/live/repl/index.html?toolbar=1&kernel=python**
 
+Alternative URLs:
+- https://www.sympy.org/en/shell.html
+- [evaluate command](https://www.sympy.org/en/shell.html?evaluate=diff(sin(x)%2C%20x)%0A%23--%0A)
+
 
 ## Requirements
 
