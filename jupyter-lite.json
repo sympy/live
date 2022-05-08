@@ -4,7 +4,8 @@
     "appName": "SymPy Live",
     "appUrl": "./repl",
     "disabledExtensions": [
-      "@jupyter-widgets/jupyterlab-manager"
+      "@jupyter-widgets/jupyterlab-manager",
+      "jupyterlab-plotly"
     ]
   }
 }
