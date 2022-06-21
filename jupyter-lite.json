@@ -6,6 +6,9 @@
     "disabledExtensions": [
       "@jupyter-widgets/jupyterlab-manager",
       "jupyterlab-plotly"
-    ]
+    ],
+    "enableMemoryStorage": true,
+    "settingsStorageDrivers": ["memoryStorageDriver"],
+    "contentsStorageDrivers": ["memoryStorageDriver"]
   }
 }
