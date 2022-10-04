@@ -36,27 +36,6 @@ jobs:
           name: jupyterlite-demo-dist-${{ github.run_number }}
           path: ./_output
 
-  addindex:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Install the dependencies
-        run: |
-          python -m pip install -r requirements.txt
-      - name: Build the JupyterLite site
-        run: |
-          jupyter lite build
-      - name: Upload (dist)
-        uses: actions/upload-artifact@v2
-        with:
-          name: jupyterlite-demo-dist-${{ github.run_number }}
-          path: ./_output
-
   deploy:
     if: github.ref == 'refs/heads/main'
     needs: [build]
