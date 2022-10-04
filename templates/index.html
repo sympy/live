@@ -59,13 +59,24 @@
   });
 </script>
 
-<!--  # jupyter-config-data
+    <!--
+      # jupyter-config-data
       The JSON in `jupyter-lite.json` is the last that will be loaded by most
       child `index.html` pages, and every field can be overridden.
-      See the recognized schema as described in the documentation:           -->
-<script id="jupyter-config-data" type="application/json" data-jupyter-lite-root=".">
-  {}
-</script>
+      See the recognized schema as described in the documentation:
+    -->
+    <script id="jupyter-config-data" type="application/json" data-jupyter-lite-root=".">
+      {}
+    </script>
+    <!--
+      # jupyter-lite-root
+      The source of truth for relative path locations. The `.` means _this_
+      is the root, and will redirect to the `appUrl` defined in
+      `.jupyter-lite/#jupyter-config-data`.
+    -->
+    <script type="module">
+      await import('./config-utils.js');
+    </script>
 
 {% endblock %}
 
