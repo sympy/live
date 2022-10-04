@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>{% block title %}SymPy{% endblock %}</title>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/static/external/css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/static/external/css/responsive-gs-12col.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/static/css/base.css" type="text/css" media="screen" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700|Gentium+Basic" rel="stylesheet" type="text/css" />
+    <link rel="icon" href="/static/SymPy-Favicon.ico" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/javascript/main.js"></script>
+    {% block extrahead %}{% endblock %}
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1><a href="index.html"> <img src="/static/images/logo.png" alt="SymPy Logo" /> {% block titleh1 %}SymPy{% endblock %}</a></h1>
+      </header>
+      <section class="row" id="main">
+        <div class="col span_7 clr small_span_4">
+          {% block main %}{% endblock %}
+          <article id="content">
+            {% block content %}{% endblock %}
+          </article>
+        </div>
+        <div id="spacer" class="col span_1 clr small_span_0">&nbsp;</div>
+        <aside id="sidebar" class="col span_4 clr small_span_2">
+          {% block sidebar %}
+          <div id="search-gamma" class="sidebar_card">
+            <h3>{% trans %} Compute with Gamma {% endtrans %}</h3>
+            <form method="get" action="https://www.sympygamma.com/input/" target="_blank">
+              <input type="text" name="i" />
+              <button>{% trans %}Compute{% endtrans %}</button>
+            </form>
+          </div>
+          <div id="about" class="sidebar_card">
+            <h3>{% trans %}Download Now{% endtrans %}</h3>
+            <p>
+              <a href="https://github.com/sympy/sympy/releases">{% trans %}Latest Version{% endtrans %}</a><br/>
+              <a href="https://github.com/sympy/sympy">{% trans %}Development Version{% endtrans %}</a>
+            </p>
+          </div>
+          <div id="quick_links" class="sidebar_card">
+            <h3>{% trans %}Quick Links{% endtrans %}</h3>
+            <ul>
+              <li><a href="https://www.sympy.org/">{% trans %}Website{% endtrans %}</a></li>
+              <li><a href="https://docs.sympy.org/">{% trans %}Docs{% endtrans %}</a></li>
+              <li><a href="https://github.com/sympy/sympy/releases">{% trans %}Download{% endtrans %}</a></li>
+              <li><a href="https://groups.google.com/group/sympy">{% trans %}Mailing list{% endtrans %}</a></li>
+              <li><a href="https://github.com/sympy/sympy">{% trans %}Source code{% endtrans %}</a></li>
+              <li><a href="https://github.com/sympy/sympy/issues/">{% trans %}Issues tracker{% endtrans %}</a></li>
+              <li><a href="https://github.com/sympy/sympy/wiki">{% trans %}Wiki{% endtrans %}</a></li>
+              <li><a href="https://github.com/sympy/sympy/wiki/introduction-to-contributing">{% trans %}Introduction to contributing{% endtrans %}</a></li>
+              <li><a href="https://live.sympy.org/">{% trans %}Try SymPy online now{% endtrans %}</a></li>
+              <li><a href="https://planet.sympy.org/">{% trans %}Planet SymPy{% endtrans %}</a></li>
+              <li><a href="https://gitter.im/sympy/sympy">{% trans %}Chat (Gitter){% endtrans %}</a></li>
+              <li><a href="http://colabti.org/irclogger/irclogger_logs/sympy">{% trans %}IRC channel logs{% endtrans %}</a></li>
+            </ul>
+          </div>
+          <div id="social" class="sidebar_card">
+            <h3>{% trans %}Follow Us{% endtrans %}<h3>
+                <!-- Place this tag where you want the widget to render. -->
+                <div class="g-follow" data-annotation="bubble"
+                data-height="24"
+                data-href="https://plus.google.com/116872266504964122381"
+                data-rel="publisher"></div>
+
+                <!-- Place this tag after the last widget tag. -->
+                <script type="text/javascript">
+                    (function() {
+                        var po = document.createElement('script'); po.type =
+                        'text/javascript'; po.async = true;
+                        po.src = 'https://apis.google.com/js/plusone.js';
+                        var s = document.getElementsByTagName('script')[0];
+                        s.parentNode.insertBefore(po, s);
+                      })();
+                    </script>
+                <a href="https://twitter.com/sympy"
+                class="twitter-follow-button" data-show-count="false"
+                data-size="large">Follow @sympy</a>
+                <script>!function(d,s,id){var
+                js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document,
+                'script', 'twitter-wjs');</script>
+          </div>
+          {% endblock %}
+          {% block sidebarextra %}
+          {% endblock %}
+      </aside>
+    </section>
+    <footer class="row">
+      <p>Copyright &copy; 2022 SymPy Development Team. </p>
+      <p>
+        {% trans url='https://github.com/sympy/live' %}This page is open source. Fork <a href="{{ url }}">the project on GitHub</a> to edit it.{% endtrans %}
+      </p>
+    </footer>
+  </div>
+</body>
+</html>

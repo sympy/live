@@ -24,6 +24,12 @@ jobs:
       - name: Build the JupyterLite site
         run: |
           jupyter lite build
+      - name: Add custom index.html (live.sympy.org landing page) and static/ files
+        run: |
+          pip install jinja2 babel
+          ls -ltr ./_output
+          ./generateindex.py
+          ls -ltr ./_output
       - name: Upload (dist)
         uses: actions/upload-artifact@v2
         with:
