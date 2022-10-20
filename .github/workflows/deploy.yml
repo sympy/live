@@ -30,6 +30,9 @@ jobs:
           ls -ltr ./_output
           ./generateindex.py
           ls -ltr ./_output
+      - name: Add CNAME file containing live.sympy.org
+        run: |
+          echo "live.sympy.org" > ./_output/CNAME
       - name: Upload (dist)
         uses: actions/upload-artifact@v2
         with:
