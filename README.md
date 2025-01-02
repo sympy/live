@@ -19,8 +19,8 @@ Other interesting URLs:
 
 The SymPy Live shell is a thin wrapper around the `repl` app in the JupyterLite.
 In order to reduce the maintentance needs,
-we leverages the code from the [`jupyterlite/demo`](https://github.com/jupyterlite/demo) project,
-and provides only minimal customization: a custom landing page that loads the repl in an iframe.
+we leverage the code from the [`jupyterlite/demo`](https://github.com/jupyterlite/demo) project,
+and provide only minimal customization: a custom landing page that loads the REPL in an iframe.
 
 
 ### Configs
