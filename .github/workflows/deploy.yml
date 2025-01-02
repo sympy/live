@@ -35,6 +35,7 @@ jobs:
         with:
           name: jupyterlite-demo-dist-${{ github.run_number }}
           path: ./_output
+          if-no-files-found: error
 
   deploy:
     if: github.ref == 'refs/heads/main'
