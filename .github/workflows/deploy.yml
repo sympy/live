@@ -26,7 +26,6 @@ jobs:
           jupyter lite build
       - name: Add custom index.html (live.sympy.org landing page) and static/ files
         run: |
-          pip install jinja2 babel
           ./generateindex.py
       - name: Add CNAME file containing live.sympy.org
         run: |
