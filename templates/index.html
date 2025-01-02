@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
-{% set host = "https://www.sympy.org" %}
-{% set path = "live/repl/" %}
+{% set host = "https://www.sympy.org/live" %}
+{% set path = "/repl/" %}
 {% set query = "?toolbar=1&kernel=python" %}
 {% set code1 = "from sympy import *" %}
 {% set code2 = "init_printing()" %}
@@ -45,7 +45,7 @@
 
   $(document).ready(function() {
     // default iframe src with SymPy initcode
-    var iframe_src = "{{ host }}/{{ path }}{{ query }}&code={{ initcode|urlencode }}";
+    var iframe_src = "{{ host }}{{ path }}{{ query }}&code={{ initcode|urlencode }}";
     // check if we have additional statements to evaluate in the query string
     var statements = getURLParameter('evaluate');
     if (statements) {
