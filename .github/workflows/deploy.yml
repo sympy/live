@@ -32,7 +32,7 @@ jobs:
         run: |
           echo "live.sympy.org" > ./_output/CNAME
       - name: Upload (dist)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: jupyterlite-demo-dist-${{ github.run_number }}
           path: ./_output
@@ -44,7 +44,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.1
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: jupyterlite-demo-dist-${{ github.run_number }}
           path: ./dist
