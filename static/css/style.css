@@ -1,16 +1,159 @@
-.small { font-size:11px; }
-.hightlight { background-color:#d6e7c7; }
-a:link { color: #4FAF00; text-decoration: none; }
-a:visited, a:active { text-decoration: none; color: #577C37; }
-a:hover { text-decoration: underline; }
-h1, h2, h3 { color: #3B5526; }
-a { -moz-outline: none; }
-
+:root {
+  /* Light theme variables */
+  --bg-color: #eee;
+  --text-color: #222;
+  --link-color: #4faf00;
+  --link-visited: #577c37;
+  --header-color: #3b5526;
+  --nav-bg: #3b5526;
+  --content-bg: #fff;
+  --border-color: #ccc;
+  --button-bg: #370c19;
+  --button-hover: #552634;
+}
+/* Dark theme overrides */
+[data-theme="dark"] {
+  --bg-color: #14181d;
+  --text-color: #e4e4e4;
+  --link-color: #81b953;
+  --link-visited: #6fa346;
+  --header-color: #81b953;
+  --nav-bg: #1a1f25;
+  --content-bg: #1e242c;
+  --border-color: #2a3139;
+  --button-bg: #81b953;
+  --button-hover: #6fa346;
+}
+/* Theme toggle button styles */
+.theme-toggle {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+.theme-toggle:hover {
+  background: rgba(129, 185, 83, 0.2);
+}
+.theme-toggle i {
+  font-size: 20px;
+  color: var(--link-color);
+}
+/* Update existing styles to use CSS variables */
+.small {
+  font-size: 11px;
+}
+.hightlight {
+  background-color: #d6e7c7;
+}
+a:link {
+  color: var(--link-color);
+  text-decoration: none;
+}
+a:visited,
+a:active {
+  text-decoration: none;
+  color: var(--link-visited);
+}
+a:hover {
+  text-decoration: underline;
+}
+h1,
+h2,
+h3 {
+  color: var(--header-color);
+}
+body {
+  font-size: 1em;
+  color: var(--text-color);
+  background: var(--bg-color);
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+}
+#header h1 a:link,
+#header h1 a:active,
+#header h1 a:hover,
+#header h1 a:visited {
+  color: var(--header-color);
+}
+#main .block .content {
+  background: var(--content-bg);
+  padding-top: 1px;
+  max-width: 800px;
+  min-width: 500px;
+  margin-top: 10px;
+}
+#main-navigation {
+  background: var(--nav-bg);
+}
+/* Add these CSS variables at the top of your style.css */
+:root {
+  --bg-color: #eee;
+  --text-color: #222;
+  --link-color: #4faf00;
+  --link-visited: #577c37;
+  --header-color: #3b5526;
+  --nav-bg: #3b5526;
+  --content-bg: #fff;
+  --border-color: #ccc;
+  --button-bg: #370c19;
+  --button-hover: #552634;
+}
+body {
+  font-family: "Open Sans", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+/* Update these core elements to use variables */
+#content,
+.sidebar_card {
+  background-color: var(--content-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 7px;
+}
+a:link {
+  color: var(--link-color);
+}
+a:visited,
+a:active {
+  color: var(--link-visited);
+}
+pre {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+.small {
+  font-size: 11px;
+}
+a:link {
+  color: #4faf00;
+  text-decoration: none;
+}
+a:visited,
+a:active {
+  text-decoration: none;
+  color: #577c37;
+}
+h1,
+h2,
+h3 {
+  color: #3b5526;
+}
+a {
+  -moz-outline: none;
+}
 body {
   font-size: 1em;
   color: #222;
   background: #eee;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
 }
 
 p {
@@ -18,34 +161,35 @@ p {
 }
 
 hr {
-  background: #f0f0ee; 
+  background: #f0f0ee;
   color: #f0f0ee;
 }
-
-#header h1{
+#header h1 {
   font-family: "Gentium Basic", "Times New Roman", serif;
   font-weight: bold;
 }
 
-#header h1 a:link, #header h1 a:active, 
-#header h1 a:hover, #header h1 a:visited {
-  color: #3B5526;
+#header h1 a:link,
+#header h1 a:active,
+#header h1 a:hover,
+#header h1 a:visited {
+  color: #3b5526;
 }
 
 #main .block .content {
-  background: #FFF;
+  background: #fff;
   padding-top: 1px;
   max-width: 800px;
   min-width: 500px;
-  margin-top:10px;
+  margin-top: 10px;
 }
 
 #main .block .content h2 {
   margin-left: 15px;
 }
-  
+
 #main-navigation {
-  background: #3B5526;
+  background: #3b5526;
 }
 
 #main-navigation ul li a {
@@ -53,7 +197,7 @@ hr {
 }
 
 #main-navigation ul li:hover {
-  background-color: #5B7745;
+  background-color: #5b7745;
 }
 
 #main-navigation ul li.active {
@@ -61,48 +205,52 @@ hr {
 }
 
 #main-navigation ul li a:hover,
-#main-navigation ul li a:link, 
-#main-navigation ul li a:visited, 
+#main-navigation ul li a:link,
+#main-navigation ul li a:visited,
 #main-navigation ul li a:active,
-.secondary-navigation ul li a:link, .secondary-navigation ul li a:visited, 
-.secondary-navigation ul li a:hover, .secondary-navigation ul li a:active {
+.secondary-navigation ul li a:link,
+.secondary-navigation ul li a:visited,
+.secondary-navigation ul li a:hover,
+.secondary-navigation ul li a:active {
   text-decoration: none;
-  color: #FFF;
+  color: #fff;
 }
 
-#user-navigation ul li a:link, 
-#user-navigation ul li a:visited,  
+#user-navigation ul li a:link,
+#user-navigation ul li a:visited,
 #user-navigation ul li a:active {
-  color: #3B5526;
+  color: #3b5526;
 }
-
-#user-navigation ul li a:hover { color: #fff; }
-
-#main-navigation ul li.active a:link, 
-#main-navigation ul li.active a:visited, 
-#main-navigation ul li.active a:hover, 
+#user-navigation ul li a:hover {
+  color: #fff;
+}
+#main-navigation ul li.active a:link,
+#main-navigation ul li.active a:visited,
+#main-navigation ul li.active a:hover,
 #main-navigation ul li.active a:active {
-  background-color: #81B953;
+  background-color: #81b953;
   border-radius: 5px;
 }
 
 .secondary-navigation {
-  background: #3B5526;
+  background: #3b5526;
   border-bottom: 5px solid #81b953;
 }
 
 .secondary-navigation ul li a {
-  display:block;
+  display: block;
   padding: 8px 12px;
 }
-
-.secondary-navigation ul li.active {background: #81b953;  font-weight: bold;}
+.secondary-navigation ul li.active {
+  background: #81b953;
+  font-weight: bold;
+}
 .secondary-navigation ul li.active a:hover {
-  background-color: #81B953;
+  background-color: #81b953;
 }
 
 .secondary-navigation li a:hover {
-  background: #81B953;
+  background: #81b953;
 }
 
 #quicklinks ul {
@@ -114,59 +262,61 @@ hr {
 
 .table th {
   background: #253618;
-  color: #FFF;
+  color: #fff;
 }
-
-.table tr th { padding: 5px; }
-
+.table tr th {
+  padding: 5px;
+}
 .table td {
-  border-bottom:1px solid #F0F0EE;
+  border-bottom: 1px solid #f0f0ee;
 }
-.table tr.odd {background: #ebfadf;}
-.table tr.even {background: #d3e8c1;}
-
-
+.table tr.odd {
+  background: #ebfadf;
+}
+.table tr.even {
+  background: #d3e8c1;
+}
 /* forms */
 
-.form input.text_field, .form textarea.text_area {
+.form input.text_field,
+.form textarea.text_area {
   width: 100%;
   border: 1px solid #262626;
 }
 
 .form input.button {
-  background: #EEE;
+  background: #eee;
   color: #262626;
   padding: 2px 5px;
   border: 1px solid #262626;
   cursor: pointer;
 }
-
 .form .description {
   font-style: italic;
-  color: #8C8C8C;
-  font-size: .9em;
+  color: #8c8c8c;
+  font-size: 0.9em;
 }
 
 /* lists */
 
 ul.list li {
-  border-bottom-color: #F0F0EE;
+  border-bottom-color: #f0f0ee;
   border-bottom-width: 1px;
   border-bottom-style: solid;
 }
 
 ul.list li .item .avatar {
-  border-color: #F0F0EE;
+  border-color: #f0f0ee;
   border-width: 1px;
   border-style: solid;
-  padding: 2px; 
+  padding: 2px;
 }
-
-#main .content, .sidebar_card {
+#main .content,
+.sidebar_card {
   -webkit-box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
-  background: #FFF;
+  background: #fff;
 }
 
 .sidebar_card {
@@ -174,8 +324,8 @@ ul.list li .item .avatar {
   overflow: hidden;
   margin: 0 0 30px;
 }
-
-.sidebar_card p, .sidebar_card h3 {
+.sidebar_card p,
+.sidebar_card h3 {
   margin: 0 0 0.5em;
 }
 
