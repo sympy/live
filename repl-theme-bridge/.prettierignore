@@ -1,0 +1,9 @@
+# This file was generated automatically by Copier and the template at
+# https://github.com/jupyterlab/extension-template
+
+node_modules
+**/node_modules
+**/lib
+**/package.json
+!/package.json
+sympy_live_repl_theme_bridge

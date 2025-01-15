@@ -1,0 +1,18 @@
+# This file was generated automatically by Copier and the template at
+# https://github.com/jupyterlab/extension-template
+
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v4.3.7
+_src_path: https://github.com/jupyterlab/extension-template
+author_email: agriyakhetarpal@outlook.com
+author_name: SymPy Live REPL Theme Bridge
+has_binder: false
+has_settings: false
+kind: frontend
+labextension_name: sympy-live-repl-theme-bridge
+project_short_description:
+  A basic JupyterLab/JupyterLite extension to create a theme
+  bridge for the SymPy Live Shell hosted at https://live.sympy.org
+python_name: sympy_live_repl_theme_bridge
+repository: https://github.com/sympy/live
+test: false
