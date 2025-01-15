@@ -7,25 +7,27 @@ $(document).ready(function () {
 const themeState = {
   isIframeReady: false,
   debugMode: true,
-  currentKernelTheme: null // Track kernel theme state
+  currentKernelTheme: null, // Track kernel theme state
 };
 
 function debug(message, data) {
   if (!themeState.debugMode) return;
   const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] 🔍 ${message}`, data || '');
+  console.log(`[${timestamp}] 🔍 ${message}`, data || "");
 }
 
 function getEffectiveTheme(mode) {
   if (mode === "auto") {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
   }
   return mode;
 }
 
 function updateUI(mode, effectiveTheme) {
   document.documentElement.setAttribute("data-theme", effectiveTheme);
-  
+
   const themeEmoji = document.querySelector(".theme-emoji");
   const themeText = document.querySelector(".theme-text");
   if (themeEmoji && themeText) {
@@ -45,13 +47,15 @@ function updateUI(mode, effectiveTheme) {
 function shouldUpdateKernelTheme(mode, effectiveTheme) {
   // For light/dark modes, always enforce the mode
   if (mode === "light" || mode === "dark") {
-    const desiredKernelTheme = mode === "dark" ? "JupyterLab Dark" : "JupyterLab Light";
+    const desiredKernelTheme =
+      mode === "dark" ? "JupyterLab Dark" : "JupyterLab Light";
     return themeState.currentKernelTheme !== desiredKernelTheme;
   }
 
   // For auto mode, only change if kernel theme doesn't match content theme
   if (mode === "auto") {
-    const desiredKernelTheme = effectiveTheme === "dark" ? "JupyterLab Dark" : "JupyterLab Light";
+    const desiredKernelTheme =
+      effectiveTheme === "dark" ? "JupyterLab Dark" : "JupyterLab Light";
     return themeState.currentKernelTheme !== desiredKernelTheme;
   }
 
@@ -61,16 +65,19 @@ function shouldUpdateKernelTheme(mode, effectiveTheme) {
 function sendThemeToIframe(theme) {
   if (!themeState.isIframeReady) return;
 
-  const jupyterTheme = theme === "dark" ? "JupyterLab Dark" : "JupyterLab Light";
-  
+  const jupyterTheme =
+    theme === "dark" ? "JupyterLab Dark" : "JupyterLab Light";
+
   // Only send if we need to change
   if (jupyterTheme !== themeState.currentKernelTheme) {
-    debug(`Sending theme to iframe: ${jupyterTheme} (current: ${themeState.currentKernelTheme})`);
-    
+    debug(
+      `Sending theme to iframe: ${jupyterTheme} (current: ${themeState.currentKernelTheme})`
+    );
+
     try {
       const message = {
         type: "from-host-to-iframe",
-        theme: jupyterTheme
+        theme: jupyterTheme,
       };
 
       const iframe = document.getElementById("live-iframe");
@@ -78,9 +85,9 @@ function sendThemeToIframe(theme) {
         iframe.contentWindow.postMessage(message, "*");
       }
       if (window.frames.jupyterlab) {
-        window.frames.jupyterlab.postMessage(message, "*");
+        window.frames.sympy_live_repl.postMessage(message, "*");
       }
-      
+
       themeState.currentKernelTheme = jupyterTheme;
     } catch (e) {
       debug("Error sending theme message:", e);
@@ -90,22 +97,26 @@ function sendThemeToIframe(theme) {
   }
 }
 
+// Pre-send theme update to kernel as it is slower to update
+// than the rest of the UI. We use this to reduce latency.
 function setTheme(mode, isInitial = false) {
+  if (themeState.isTransitioning) return;
+  themeState.isTransitioning = true;
+
   debug(`Setting theme mode: ${mode} (initial: ${isInitial})`);
   localStorage.setItem("theme-mode", mode);
 
   const effectiveTheme = getEffectiveTheme(mode);
   debug(`Effective theme: ${effectiveTheme}`);
 
-  // Update UI
-  updateUI(mode, effectiveTheme);
-
-  // Selectively update kernel theme
   if (shouldUpdateKernelTheme(mode, effectiveTheme)) {
     sendThemeToIframe(effectiveTheme);
-  } else {
-    debug("Keeping current kernel theme");
   }
+
+  setTimeout(() => {
+    updateUI(mode, effectiveTheme);
+    themeState.isTransitioning = false;
+  }, 16); // One frame at 60fps
 }
 
 function cycleTheme() {

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
-{% set host = "https://www.sympy.org/live" %}
+<!-- reset when done -->
+{% set host = "http://127.0.0.1:5500/_output" %}
 {% set path = "/repl/" %}
 {% set query = "?toolbar=1&kernel=python" %}
 {% set code1 = "from sympy import *" %}
@@ -83,6 +84,7 @@
 
   <iframe
       id="live-iframe"
+      name="sympy_live_repl"
       src=""
       width="100%"
       height="500px"
