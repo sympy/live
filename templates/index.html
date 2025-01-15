@@ -46,7 +46,8 @@
 
   $(document).ready(function() {
     // default iframe src with SymPy initcode
-    var iframe_src = "{{ host }}{{ path }}{{ query }}&code={{ initcode|urlencode }}";
+    // see https://jupyterlite.readthedocs.io/en/stable/quickstart/embed-repl.html#configuration for URL customisation
+    var iframe_src = "{{ host }}{{ path }}{{ query|safe }}&code={{ initcode|urlencode }}";
     // check if we have additional statements to evaluate in the query string
     var statements = getURLParameter('evaluate');
     if (statements) {
@@ -98,7 +99,7 @@
           {% trans %}Press ENTER to run the code or use the Run button in the toolbar.{% endtrans %}
         </p>
         <p id="loading_message">
-          {% trans %}Note it can take up to 30 seconds before the shell finishes loading and is ready to run commands.{% endtrans %}    
+          {% trans %}Note it can take up to 30 seconds before the shell finishes loading and is ready to run commands.{% endtrans %}
         </p>
       </div>
   </div>
@@ -125,8 +126,8 @@
     </pre>
   </p>
   <p>
-    {% trans %}SymPy Live shell is powered by{% endtrans %} <a href="https://jupyterlite.readthedocs.io/en/latest/">JupyterLite</a>.
-    {% trans %}It can take up to 30 seconds before the shell code and libraries load completely and become available for using interactively.{% endtrans %}    
+    {% trans %}SymPy Live shell is powered by{% endtrans %} <a href="https://jupyterlite.readthedocs.io/en/stable/">JupyterLite</a>.
+    {% trans %}It can take up to 30 seconds before the shell code and libraries load completely and become available for using interactively.{% endtrans %}
   </p>
 </div>
 
@@ -147,7 +148,7 @@
       </p>
 
       <p>
-        {% trans %}Read the tutorial in the SymPy docs to learn more about SymPy{% endtrans %}: 
+        {% trans %}Read the tutorial in the SymPy docs to learn more about SymPy{% endtrans %}:
         <a href="https://docs.sympy.org/tutorial/">{% trans %}SymPy Tutorial{% endtrans %}</a>.
       </p>
   </div>
