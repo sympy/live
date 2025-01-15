@@ -10,3 +10,4 @@ jupyterlite-pyodide-kernel==0.5.1
 # Specific to generating SymPy Live index page
 jinja2==3.1.5
 babel==2.16.0
+file://repl-theme-bridge/ # dark theme for the REPL
