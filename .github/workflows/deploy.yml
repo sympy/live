@@ -27,9 +27,16 @@ jobs:
       - name: Build dark theme support bridge
         working-directory: repl-theme-bridge
         run: jlpm run build
-      - name: Add custom index.html (live.sympy.org landing page) and static/ files
+      # Check for Pyodide kernel and theme bridge extension
+      # For some reason "jupyter labextension list" writes to
+      # both stdout and stderr, causing grep to fail. Maybe
+      # bug upstream?
+      - name: Sanity check extensions
         run: |
-          ./generateindex.py
+          jupyter labextension list 2>&1 | grep -E 'sympy-live-repl-theme-bridge'
+          jupyter labextension list 2>&1 | grep -E 'pyodide-kernel-extension'
+      - name: Add custom index.html (live.sympy.org landing page) and static/ files
+        run: python generateindex.py
       - name: Add CNAME file containing live.sympy.org
         run: |
           echo "live.sympy.org" > ./_output/CNAME
