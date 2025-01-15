@@ -24,6 +24,9 @@ jobs:
       - name: Build the JupyterLite site
         run: |
           jupyter lite build
+      - name: Build dark theme support bridge
+        working-directory: repl-theme-bridge
+        run: jlpm run build
       - name: Add custom index.html (live.sympy.org landing page) and static/ files
         run: |
           ./generateindex.py
