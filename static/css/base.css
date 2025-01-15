@@ -36,15 +36,11 @@ pre {
 }
 button {
   font-family: inherit;
-  background: var(--button-bg);
   border: 0;
   color: #fff;
   transition: all 0.3s ease-in;
   margin: 0;
   cursor: pointer;
-}
-button:hover {
-  background: var(--button-hover);
 }
 #content,
 .sidebar_card {
@@ -363,6 +359,12 @@ footer a:active {
   header h1 {
     font-size: 2.1875em;
   }
+
+  /* make h1 in dark mode be white font */
+  [data-theme="dark"] header h1 {
+    color: #fff;
+  }
+
   header h1 a:link,
   header h1 a:active,
   header h1 a:hover,
@@ -526,7 +528,6 @@ pre {
 
 button {
   font-family: inherit;
-  background: #370c19;
   border: 0;
   color: #fff;
   -moz-transition: all 0.3s ease-in;
@@ -539,10 +540,6 @@ button {
 
 button.disabled {
   cursor: default;
-}
-
-button:hover {
-  background: #552634;
 }
 
 textarea {
@@ -691,8 +688,6 @@ code {
   --nav-bg: #1a1f25;
   --content-bg: #1e242c;
   --border-color: #2a3139;
-  --button-bg: #81b953;
-  --button-hover: #6fa346;
 }
 
 /* Override specific elements for dark mode */

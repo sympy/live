@@ -8,8 +8,6 @@
   --nav-bg: #3b5526;
   --content-bg: #fff;
   --border-color: #ccc;
-  --button-bg: #370c19;
-  --button-hover: #552634;
 }
 /* Dark theme overrides */
 [data-theme="dark"] {
@@ -21,31 +19,29 @@
   --nav-bg: #1a1f25;
   --content-bg: #1e242c;
   --border-color: #2a3139;
-  --button-bg: #81b953;
-  --button-hover: #6fa346;
 }
 /* Theme toggle button styles */
 .theme-toggle {
-  position: absolute;
-  right: 20px;
-  top: 20px;
   background: transparent;
   border: none;
+  padding: 0.5rem;
   cursor: pointer;
-  padding: 8px;
-  border-radius: 50%;
-  display: flex;
+  font-size: inherit;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s;
+  gap: 0.5rem;
+  color: inherit;
 }
-.theme-toggle:hover {
-  background: rgba(129, 185, 83, 0.2);
+
+.theme-emoji {
+  font-size: 1.2em;
 }
-.theme-toggle i {
-  font-size: 20px;
-  color: var(--link-color);
+
+.theme-text {
+  font-family: inherit;
+  font-size: inherit;
 }
+
 /* Update existing styles to use CSS variables */
 .small {
   font-size: 11px;
@@ -92,7 +88,7 @@ body {
 #main-navigation {
   background: var(--nav-bg);
 }
-/* Add these CSS variables at the top of your style.css */
+
 :root {
   --bg-color: #eee;
   --text-color: #222;
@@ -102,15 +98,13 @@ body {
   --nav-bg: #3b5526;
   --content-bg: #fff;
   --border-color: #ccc;
-  --button-bg: #370c19;
-  --button-hover: #552634;
 }
 body {
   font-family: "Open Sans", sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
 }
-/* Update these core elements to use variables */
+
 #content,
 .sidebar_card {
   background-color: var(--content-bg);
