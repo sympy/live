@@ -1,6 +1,7 @@
-# Mark repl-theme-bridge/yarn.lock as linguist-generated so that
-# it doesn't show up in diffs automatically
+# Mark some repl-theme-bridge files as linguist-generated so that
+# they doesn't show up in diffs automatically
 repl-theme-bridge/yarn.lock linguist-generated=true
+repl-theme-bridge/package.json linguist-generated=true
 
 # Text files newline normalisation
 * text=auto
