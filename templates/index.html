@@ -46,7 +46,7 @@
   $(document).ready(function() {
     // default iframe src with SymPy initcode
     // see https://jupyterlite.readthedocs.io/en/stable/quickstart/embed-repl.html#configuration for URL customisation
-    var iframe_src = "{{ host }}{{ path }}{{ query }}?kernel=python&execute=0?toolbar=1&code={{ initcode|urlencode }}";
+    var iframe_src = "{{ host }}{{ path }}{{ query|safe }}&code={{ initcode|urlencode }}";
     // check if we have additional statements to evaluate in the query string
     var statements = getURLParameter('evaluate');
     if (statements) {
