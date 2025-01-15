@@ -6,90 +6,109 @@ $(document).ready(function () {
 
 const themeState = {
   isIframeReady: false,
-  debugMode: true, // enable detailed logging
+  debugMode: true,
+  currentKernelTheme: null // Track kernel theme state
 };
 
 function debug(message, data) {
   if (!themeState.debugMode) return;
   const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] 🔍 ${message}`, data || "");
+  console.log(`[${timestamp}] 🔍 ${message}`, data || '');
 }
 
-function checkIframeAccess() {
-  const iframe = document.getElementById("live-iframe");
-  debug("Checking iframe access:");
-  debug("- iframe element exists:", !!iframe);
-  debug("- iframe contentWindow exists:", !!(iframe && iframe.contentWindow));
-  debug("- window.frames.jupyterlab exists:", !!window.frames.jupyterlab);
-
-  if (iframe) {
-    debug("- iframe current src:", iframe.src);
-  }
-}
-
-function sendThemeMessage(theme) {
-  const message = {
-    type: "from-host-to-iframe",
-    theme: theme,
-  };
-
-  debug("Attempting to send theme message:", message);
-
-  try {
-    // Method 1: Direct contentWindow
-    const iframe = document.getElementById("live-iframe");
-    if (iframe && iframe.contentWindow) {
-      debug("Sending via contentWindow");
-      iframe.contentWindow.postMessage(message, "*");
-    }
-
-    // Method 2: Named frame
-    if (window.frames.jupyterlab) {
-      debug("Sending via named frame");
-      window.frames.jupyterlab.postMessage(message, "*");
-    }
-  } catch (e) {
-    debug("Error sending message:", e);
-  }
-}
-
-function setTheme(mode) {
-  debug(`Setting theme mode: ${mode}`);
-  localStorage.setItem("theme-mode", mode);
-
-  let actualTheme;
+function getEffectiveTheme(mode) {
   if (mode === "auto") {
-    actualTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-  } else {
-    actualTheme = mode;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   }
+  return mode;
+}
 
-  document.documentElement.setAttribute("data-theme", actualTheme);
-
+function updateUI(mode, effectiveTheme) {
+  document.documentElement.setAttribute("data-theme", effectiveTheme);
+  
   const themeEmoji = document.querySelector(".theme-emoji");
-  if (themeEmoji) {
+  const themeText = document.querySelector(".theme-text");
+  if (themeEmoji && themeText) {
     themeEmoji.textContent = {
       light: "☀️",
       dark: "🌙",
       auto: "🌗",
     }[mode];
+    themeText.textContent = {
+      light: "Light",
+      dark: "Dark",
+      auto: "Auto",
+    }[mode];
+  }
+}
+
+function shouldUpdateKernelTheme(mode, effectiveTheme) {
+  // For light/dark modes, always enforce the mode
+  if (mode === "light" || mode === "dark") {
+    const desiredKernelTheme = mode === "dark" ? "JupyterLab Dark" : "JupyterLab Light";
+    return themeState.currentKernelTheme !== desiredKernelTheme;
   }
 
-  if (themeState.isIframeReady) {
-    const jupyterTheme =
-      actualTheme === "dark" ? "JupyterLab Dark" : "JupyterLab Light";
-    debug(`Preparing to send theme: ${jupyterTheme}`);
-    checkIframeAccess(); // Check iframe accessibility
-    sendThemeMessage(jupyterTheme);
+  // For auto mode, only change if kernel theme doesn't match content theme
+  if (mode === "auto") {
+    const desiredKernelTheme = effectiveTheme === "dark" ? "JupyterLab Dark" : "JupyterLab Light";
+    return themeState.currentKernelTheme !== desiredKernelTheme;
+  }
+
+  return false;
+}
+
+function sendThemeToIframe(theme) {
+  if (!themeState.isIframeReady) return;
+
+  const jupyterTheme = theme === "dark" ? "JupyterLab Dark" : "JupyterLab Light";
+  
+  // Only send if we need to change
+  if (jupyterTheme !== themeState.currentKernelTheme) {
+    debug(`Sending theme to iframe: ${jupyterTheme} (current: ${themeState.currentKernelTheme})`);
+    
+    try {
+      const message = {
+        type: "from-host-to-iframe",
+        theme: jupyterTheme
+      };
+
+      const iframe = document.getElementById("live-iframe");
+      if (iframe?.contentWindow) {
+        iframe.contentWindow.postMessage(message, "*");
+      }
+      if (window.frames.jupyterlab) {
+        window.frames.jupyterlab.postMessage(message, "*");
+      }
+      
+      themeState.currentKernelTheme = jupyterTheme;
+    } catch (e) {
+      debug("Error sending theme message:", e);
+    }
   } else {
-    debug("Iframe not ready, skipping theme sync");
+    debug(`Skipping kernel theme update - already ${jupyterTheme}`);
+  }
+}
+
+function setTheme(mode, isInitial = false) {
+  debug(`Setting theme mode: ${mode} (initial: ${isInitial})`);
+  localStorage.setItem("theme-mode", mode);
+
+  const effectiveTheme = getEffectiveTheme(mode);
+  debug(`Effective theme: ${effectiveTheme}`);
+
+  // Update UI
+  updateUI(mode, effectiveTheme);
+
+  // Selectively update kernel theme
+  if (shouldUpdateKernelTheme(mode, effectiveTheme)) {
+    sendThemeToIframe(effectiveTheme);
+  } else {
+    debug("Keeping current kernel theme");
   }
 }
 
 function cycleTheme() {
-  debug("Theme toggle clicked");
   const currentMode = localStorage.getItem("theme-mode") || "light";
   const modes = ["light", "dark", "auto"];
   const nextMode = modes[(modes.indexOf(currentMode) + 1) % modes.length];
@@ -99,57 +118,40 @@ function cycleTheme() {
 function initializeIframeAndTheme() {
   debug("Starting initialization");
 
-  // Listen for messages from iframe
+  // Listen for theme confirmations from iframe
   window.addEventListener("message", (event) => {
-    debug("Received message from iframe:", event.data);
     if (event.data.type === "from-iframe-to-host") {
       debug("Theme confirmation from iframe:", event.data.theme);
+      themeState.currentKernelTheme = event.data.theme;
     }
   });
 
-  // Wait for iframe to be ready
   const liveIframe = document.getElementById("live-iframe");
   if (liveIframe) {
-    debug("Found iframe element, setting up load listener");
-
     liveIframe.addEventListener("load", () => {
-      debug("Iframe loaded, current src:", liveIframe.src);
-
-      // Check if src contains expected JupyterLite path
-      if (!liveIframe.src.includes("repl")) {
-        debug("Warning: Iframe src might not be correct JupyterLite instance");
-      }
-
+      debug("Iframe loaded");
       setTimeout(() => {
         themeState.isIframeReady = true;
-        debug("JupyterLite initialization timeout complete");
-        checkIframeAccess();
-
+        debug("JupyterLite initialization complete");
         const savedMode = localStorage.getItem("theme-mode") || "light";
-        setTheme(savedMode);
+        setTheme(savedMode, true);
       }, 2000);
     });
-  } else {
-    debug("Warning: Could not find iframe element");
   }
 
-  // Set up theme toggle
   const themeToggle = document.querySelector(".theme-toggle");
   if (themeToggle) {
     themeToggle.addEventListener("click", cycleTheme);
-    debug("Theme toggle button initialized");
   }
 
-  // Set up system theme detection
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
   mediaQuery.addEventListener("change", () => {
-    if (localStorage.getItem("theme-mode") === "auto") {
+    const currentMode = localStorage.getItem("theme-mode") || "light";
+    if (currentMode === "auto") {
       setTheme("auto");
     }
   });
 
-  // Initial theme
   const savedMode = localStorage.getItem("theme-mode") || "light";
-  debug("Setting initial theme:", savedMode);
-  setTheme(savedMode);
+  setTheme(savedMode, true);
 }
