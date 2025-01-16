@@ -57,8 +57,7 @@ Deployment to production is automated by the Github actions workflow [deploy.yml
 which performs the following steps:
 
  1. Installs Python and dependencies listed in `requirements.txt`
- 2. Runs `./check_sympy_version.py` to check if the version of SymPy in Pyodide is up-to-date. If not, it downloads the latest
-    version of SymPy from PyPI and stores it in `custom_wheels/`. This directory is indexed by JupyterLite via the [`jupyter_lite_config.json`](jupyter_lite_config.json) file to make the wheel available to the Pyodide kernel
+ 2. Runs the `pip download sympy --no-deps` command and stores the wheel in `custom_wheels/`. This directory is indexed by JupyterLite via the [`jupyter_lite_config.json`](jupyter_lite_config.json) file to make the wheel available to the Pyodide kernel
     for the REPL app.
  3. Runs the command `jupyter lite build` to build the JupyterLab static site, placing the results in `_output/`.
  4. Runs `./generate_index.py` to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
