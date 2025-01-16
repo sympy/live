@@ -57,10 +57,13 @@ Deployment to production is automated by the Github actions workflow [deploy.yml
 which performs the following steps:
 
  1. Installs Python and dependencies listed in `requirements.txt`
- 2. Runs the command `jupyter lite build` to build the JupyterLab static site, placing the results in `_output/`.
- 3. Runs `./generateindex.py` to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
- 4. Adds the file `_output/CNAME` containing `live.sympy.org`.
- 5. Deploys the contents of `_output` to GitHub pages (`gh-pages` branch hosted at https://live.sympy.org).
+ 2. Runs `./check_sympy_version.py` to check if the version of SymPy in Pyodide is up-to-date. If not, it downloads the latest
+    version of SymPy from PyPI and stores it in `custom_wheels/`. This directory is indexed by JupyterLite via the [`jupyter_lite_config.json`](jupyter_lite_config.json) file to make the wheel available to the Pyodide kernel
+    for the REPL app.
+ 3. Runs the command `jupyter lite build` to build the JupyterLab static site, placing the results in `_output/`.
+ 4. Runs `./generate_index.py` to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
+ 5. Adds the file `_output/CNAME` containing `live.sympy.org`.
+ 6. Deploys the contents of `_output` to GitHub pages (`gh-pages` branch hosted at https://live.sympy.org).
 
 The last step (deploy to `gh-pages`) runs only on push to the `main` branch.
 
@@ -75,9 +78,9 @@ and modify one line in `templates/index.html` to load the iframe from localhost 
  2. Runs the command `jupyter lite build` to build the JupyterLab static site, placing the results in `_output/`.
  3. Edit [`templates/index.html`](https://github.com/sympy/live/blob/main/templates/index.html#L3)
     to change the value of `host` from `https://www.sympy.org/live` to `http://127.0.0.1:8000`.
- 4. Run `./generateindex.py` to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
- 5. Run a local web server in the directory `_output/`. For example, you can run `cd _output/` followed by `python3 -m http.server 8000`.
- 6. Open `http://127.0.0.1:8000/index.html` in your browser.
+ 5. Run `generate_index.py` with a PEP 723 compatible script runner such as `pipx`, `uv`, `hatch`, etc. to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
+ 6. Run a local web server in the directory `_output/`. For example, you can run `cd _output/` followed by `python3 -m http.server 8000`.
+ 7. Open `http://127.0.0.1:8000/index.html` in your browser.
 
 
 
