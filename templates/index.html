@@ -3,12 +3,13 @@
 {% set host = "https://www.sympy.org/live" %}
 {% set path = "/repl/" %}
 {% set query = "?toolbar=1&kernel=python" %}
-{% set code1 = "from sympy import *" %}
-{% set code2 = "init_printing()" %}
-{% set code3 = "x, y, z, t = symbols('x y z t')" %}
-{% set code4 = "k, m, n = symbols('k m n', integer=True)" %}
-{% set code5 = "f, g, h = symbols('f g h', cls=Function)" %}
-{% set initcode = "\n".join([code1, code2, code3, code4, code5]) %}
+{% set code1 = "%pip install sympy" %}
+{% set code2 = "from sympy import *" %}
+{% set code3 = "init_printing()" %}
+{% set code4 = "x, y, z, t = symbols('x y z t')" %}
+{% set code5 = "k, m, n = symbols('k m n', integer=True)" %}
+{% set code6 = "f, g, h = symbols('f g h', cls=Function)" %}
+{% set initcode = "\n".join([code1, code2, code3, code4, code5, code6]) %}
 
 
 {% block title %}SymPy Live Shell{% endblock %}
