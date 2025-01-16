@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#   "jinja2",
+#   "babel",
+# ]
+# ///
+
 import os
 import babel
 import babel.dates
