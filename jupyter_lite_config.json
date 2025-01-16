@@ -3,5 +3,8 @@
     "apps": ["repl"],
     "no_unused_shared_packages": true,
     "no_sourcemaps": true
+  },
+  "PipliteAddon": {
+    "piplite_urls": ["custom_wheels/"]
   }
 }
