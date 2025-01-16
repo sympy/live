@@ -7,6 +7,12 @@ on:
   pull_request:
     branches:
       - "*"
+  # To ensure we always fetch the latest SymPy wheel
+  # and build the site daily
+  schedule:
+    - cron: "0 3 * * *"
+  # Allow manual trigger to rebuild if something failed
+  workflow_dispatch:
 
 jobs:
   build:
