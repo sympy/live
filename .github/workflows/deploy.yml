@@ -37,6 +37,9 @@ jobs:
           --no-deps \
           --dest custom_wheels
 
+      - name: Reduce the size of the wheel
+        run: pipx run unvendor_tests_from_wheel.py custom_wheels/
+
       - name: Build the JupyterLite site
         run: jupyter lite build
 

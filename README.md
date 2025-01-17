@@ -27,7 +27,7 @@ and provide only minimal customization: a custom landing page that loads the REP
 
 The operation of JupyterLite is configured in several places:
 - `requirements.txt`: specifies the version `jupyterlab`, `jupyterlite-core` and `jupyterlite-pyodide-kernel`.
-- `jupyter_lite_config.json`: general configs for the Jupyter lite build system and custom wheels to make available to the Pyodide kernel for installing packages.
+- `jupyter_lite_config.json`: general configs for the JupyterLite build system and custom wheels to make available to the Pyodide kernel for installation.
 - `repl/jupyter-lite.json`: configs specific to the REPL app. See [example here](https://github.com/ivanistheone/live/blob/357e60a228b43ac28ef835953d00f4495a429d78/repl/jupyter-lite.json).
 - `overrides.json`: customizations of the JupyterLite UI
 
@@ -55,10 +55,11 @@ which performs the following steps:
  1. Installs Python and dependencies listed in `requirements.txt`
  2. Runs the `pip download sympy --no-deps` command and stores the wheel in `custom_wheels/`. This directory is indexed by JupyterLite via the [`jupyter_lite_config.json`](jupyter_lite_config.json) file to make the wheel available to the Pyodide kernel
     for the REPL app.
- 3. Runs the command `jupyter lite build` to build the JupyterLab static site, placing the results in `_output/`.
- 4. Runs `./generate_index.py` to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
- 5. Adds the file `_output/CNAME` containing `live.sympy.org`.
- 6. Deploys the contents of `_output` to GitHub pages (`gh-pages` branch hosted at https://live.sympy.org).
+ 3. Runs `unvendor_tests_from_wheel.py` to remove the tests from the downloaded wheel, reducing its size.
+ 4. Runs the command `jupyter lite build` to build the JupyterLab static site, placing the results in `_output/`.
+ 5. Runs `generate_index.py` to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
+ 6. Adds the file `_output/CNAME` containing `live.sympy.org`.
+ 7. Deploys the contents of `_output` to GitHub pages (`gh-pages` branch hosted at https://live.sympy.org).
 
 The last step (deploy to `gh-pages`) runs only on pushes to the `main` branch.
 
