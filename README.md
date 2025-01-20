@@ -53,9 +53,9 @@ Deployment to production is automated by the Github actions workflow [deploy.yml
 which performs the following steps:
 
  1. Installs Python and dependencies listed in `requirements.txt`
- 2. Runs the `pip download sympy --no-deps` command and stores the wheel in `custom_wheels/`. This directory is indexed by JupyterLite via the [`jupyter_lite_config.json`](jupyter_lite_config.json) file to make the wheel available to the Pyodide kernel
+ 2. Runs the `pip download sympy --no-deps --dest custom_wheels` command and stores the wheel in `custom_wheels/`. This directory is indexed by JupyterLite via the [`jupyter_lite_config.json`](jupyter_lite_config.json) file to make the wheel available to the Pyodide kernel
     for the REPL app.
- 3. Runs `unvendor_tests_from_wheel.py` to remove the tests from the downloaded wheel, reducing its size.
+ 3. Runs `unvendor_tests_from_wheel.py custom_wheels` to remove the tests from the downloaded wheel, reducing its size.
  4. Runs the command `jupyter lite build` to build the JupyterLab static site, placing the results in `_output/`.
  5. Runs `generate_index.py` to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
  6. Adds the file `_output/CNAME` containing `live.sympy.org`.
@@ -79,7 +79,7 @@ and modify one line in `templates/index.html` to load the iframe from localhost 
    ```
 
    This wheel will be indexed by JupyterLite via the `jupyter_lite_config.json` file and made available to the Pyodide kernel for the REPL app for installation.
- 3. Optionally, run `unvendor_tests_from_wheel.py` with a PEP 723 compatible script runner such as `pipx`, `uv`, `hatch`, etc. to remove the tests from the downloaded wheel, reducing its size.
+ 3. Optionally, run `unvendor_tests_from_wheel.py custom_wheels` with a PEP 723 compatible script runner such as `pipx`, `uv`, `hatch`, etc. to remove the tests from the downloaded wheel, reducing its size.
  3. Run the command `jupyter lite build` to build the JupyterLab static site, placing the results in `_output/`.
  4. Edit [`templates/index.html`](https://github.com/sympy/live/blob/main/templates/index.html#L3)
     to change the value of `host` from `https://www.sympy.org/live` to `http://127.0.0.1:8000`.

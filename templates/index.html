@@ -3,13 +3,16 @@
 {% set host = "https://www.sympy.org/live" %}
 {% set path = "/repl/" %}
 {% set query = "?toolbar=1&kernel=python" %}
-{% set code1 = "%pip install sympy" %}
-{% set code2 = "from sympy import *" %}
-{% set code3 = "init_printing()" %}
-{% set code4 = "x, y, z, t = symbols('x y z t')" %}
-{% set code5 = "k, m, n = symbols('k m n', integer=True)" %}
-{% set code6 = "f, g, h = symbols('f g h', cls=Function)" %}
-{% set initcode = "\n".join([code1, code2, code3, code4, code5, code6]) %}
+{% set preinitcode = "\n".join([
+    "%pip install sympy==" ~ sympy_version
+]) %}
+{% set initcode = "\n".join([
+    "from sympy import *",
+    "init_printing()",
+    "x, y, z, t = symbols('x y z t')",
+    "k, m, n = symbols('k m n', integer=True)",
+    "f, g, h = symbols('f g h', cls=Function)"
+]) %}
 
 
 {% block title %}SymPy Live Shell{% endblock %}
@@ -47,7 +50,7 @@
   $(document).ready(function() {
     // default iframe src with SymPy initcode
     // see https://jupyterlite.readthedocs.io/en/stable/quickstart/embed-repl.html#configuration for URL customisation
-    var iframe_src = "{{ host }}{{ path }}{{ query|safe }}&code={{ initcode|urlencode }}";
+    var iframe_src = "{{ host }}{{ path }}{{ query|safe }}&code={{ preinitcode|urlencode }}&code={{ initcode|urlencode }}";
     // check if we have additional statements to evaluate in the query string
     var statements = getURLParameter('evaluate');
     if (statements) {
