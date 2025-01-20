@@ -27,13 +27,13 @@ and provide only minimal customization: a custom landing page that loads the REP
 
 The operation of JupyterLite is configured in several places:
 - `requirements.txt`: specifies the version `jupyterlab`, `jupyterlite-core` and `jupyterlite-pyodide-kernel`.
-- `jupyter_lite_config.json`: general configs for the Jupyter lite build system
+- `jupyter_lite_config.json`: general configs for the JupyterLite build system and custom wheels to make available to the Pyodide kernel for installation.
 - `repl/jupyter-lite.json`: configs specific to the REPL app. See [example here](https://github.com/ivanistheone/live/blob/357e60a228b43ac28ef835953d00f4495a429d78/repl/jupyter-lite.json).
 - `overrides.json`: customizations of the JupyterLite UI
 
 In addition to the above, the SymPy Live shell depends on the following customizations:
 - Custom landing page [index.html](https://github.com/sympy/live/blob/main/templates/index.html) that embeds the JupyterLite REPL.
-- Automatic import `from sympy import *` and init commands in [index.html template](https://github.com/sympy/live/blob/main/templates/index.html#L6-L11).
+- Automatic install (`%pip install sympy`), import (`from sympy import *`) and init commands in [index.html template](https://github.com/sympy/live/blob/main/templates/index.html#L6-L11).
 - JavaScript code to decode evaluate query string, see [here](https://github.com/sympy/live/blob/main/templates/index.html#L49-L56).
 
 > [!NOTE]
@@ -41,13 +41,9 @@ In addition to the above, the SymPy Live shell depends on the following customiz
 > Use the [upstream requirements file](https://github.com/jupyterlite/demo/blob/main/requirements.txt) as reference.
 
 > [!NOTE]
-> The version of SymPy running on [live.sympy.org/](https://live.sympy.org/) depends on the package version included in Pyodide.
-> See [here](https://pyodide.org/en/stable/usage/packages-in-pyodide.html) for the current package versions.
-> Updating the SymPy version requires first updating the [SymPy package in Pyodide](https://github.com/pyodide/pyodide/tree/main/packages/sympy).
-> See this [PR](https://github.com/pyodide/pyodide/pull/5098) for example. 
-> Once the new version of `jupyterlite-pyodide-kernel` is released (which can take months),
-> we can update the version in `requirements.txt` and deploy the updated SymPy Live Shell following the instructions below.
-
+> Pyodide might not have the latest version of SymPy available in PyPI. The [version of SymPy available in Pyodide](https://github.com/pyodide/pyodide/tree/main/packages/sympy) is updated only when a new version of Pyodide is released. This can take a considerable amount of time, which means that it can get outdated.
+> Therefore, we ensure that the version of SymPy used in the SymPy Live Shell is up-to-date by running the `pip download sympy --no-deps` command before deployment, which downloads the latest version of SymPy from PyPI and stores it in `custom_wheels/`. This directory is indexed by JupyterLite via the `jupyter_lite_config.json` file to make the wheel available to the Pyodide kernel for the REPL app for installation.
+> It is still recommended to keep updating the SymPy version in Pyodide to the latest version to ensure that the SymPy Live Shell is always up-to-date, so that we don't have to run the `pip download` command before every deployment.
 
 
 ### Deploying in production
@@ -57,12 +53,15 @@ Deployment to production is automated by the Github actions workflow [deploy.yml
 which performs the following steps:
 
  1. Installs Python and dependencies listed in `requirements.txt`
- 2. Runs the command `jupyter lite build` to build the JupyterLab static site, placing the results in `_output/`.
- 3. Runs `./generateindex.py` to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
- 4. Adds the file `_output/CNAME` containing `live.sympy.org`.
- 5. Deploys the contents of `_output` to GitHub pages (`gh-pages` branch hosted at https://live.sympy.org).
+ 2. Runs the `pip download sympy --no-deps --dest custom_wheels` command and stores the wheel in `custom_wheels/`. This directory is indexed by JupyterLite via the [`jupyter_lite_config.json`](jupyter_lite_config.json) file to make the wheel available to the Pyodide kernel
+    for the REPL app.
+ 3. Runs `unvendor_tests_from_wheel.py custom_wheels` to remove the tests from the downloaded wheel, reducing its size.
+ 4. Runs the command `jupyter lite build` to build the JupyterLab static site, placing the results in `_output/`.
+ 5. Runs `generate_index.py` to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
+ 6. Adds the file `_output/CNAME` containing `live.sympy.org`.
+ 7. Deploys the contents of `_output` to GitHub pages (`gh-pages` branch hosted at https://live.sympy.org).
 
-The last step (deploy to `gh-pages`) runs only on push to the `main` branch.
+The last step (deploy to `gh-pages`) runs only on pushes to the `main` branch.
 
 
 ### Running locally
@@ -72,12 +71,21 @@ but you'll run local web server to view the static files in `_output`,
 and modify one line in `templates/index.html` to load the iframe from localhost (127.0.0.1):
 
  1. Install Python and dependencies listed in `requirements.txt`
- 2. Runs the command `jupyter lite build` to build the JupyterLab static site, placing the results in `_output/`.
- 3. Edit [`templates/index.html`](https://github.com/sympy/live/blob/main/templates/index.html#L3)
+ 2. Download latest stable SymPy wheel:
+
+   ```bash
+    mkdir -p custom_wheels
+    python -m pip download sympy --only-binary=:all: --no-deps --dest custom_wheels
+   ```
+
+   This wheel will be indexed by JupyterLite via the `jupyter_lite_config.json` file and made available to the Pyodide kernel for the REPL app for installation.
+ 3. Optionally, run `unvendor_tests_from_wheel.py custom_wheels` with a PEP 723 compatible script runner such as `pipx`, `uv`, `hatch`, etc. to remove the tests from the downloaded wheel, reducing its size.
+ 3. Run the command `jupyter lite build` to build the JupyterLab static site, placing the results in `_output/`.
+ 4. Edit [`templates/index.html`](https://github.com/sympy/live/blob/main/templates/index.html#L3)
     to change the value of `host` from `https://www.sympy.org/live` to `http://127.0.0.1:8000`.
- 4. Run `./generateindex.py` to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
- 5. Run a local web server in the directory `_output/`. For example, you can run `cd _output/` followed by `python3 -m http.server 8000`.
- 6. Open `http://127.0.0.1:8000/index.html` in your browser.
+ 5. Run `generate_index.py` with a PEP 723 compatible script runner such as `pipx`, `uv`, `hatch`, etc. to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
+ 6. Run a local web server in the directory `_output/`. For example, you can run `cd _output/` followed by `python3 -m http.server 8000`.
+ 7. Open `http://127.0.0.1:8000/index.html` in your browser.
 
 
 
