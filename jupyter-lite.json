@@ -2,7 +2,7 @@
   "jupyter-config-data": {
     "appName": "SymPy Live",
     "appUrl": "./repl",
-    "appVersion": "0.5.1",
+    "appVersion": "0.6.0-alpha.3",
     "baseUrl": "./",
     "contentsStorageDrivers": [
       "memoryStorageDriver"
@@ -17,8 +17,7 @@
     "federated_extensions": [
       {
         "extension": "./extension",
-        "liteExtension": true,
-        "load": "static/remoteEntry.3ac7f76fb22d01270496.js",
+        "load": "static/remoteEntry.20c1fd18ad4cab4a5d25.js",
         "name": "@jupyterlite/pyodide-kernel-extension"
       }
     ],
@@ -301,8 +300,8 @@
     "litePluginSettings": {
       "@jupyterlite/pyodide-kernel-extension:kernel": {
         "pipliteUrls": [
-          "./pypi/all.json?sha256=d38e168ad98caf6a0eee05b8b46e6d48c26675820780de8961a37cdc796d6bac",
-          "./extensions/@jupyterlite/pyodide-kernel-extension/static/pypi/all.json?sha256=8410129b75a5560182e60e67735d1efad22cde00c42736ad5f8841351d33b617"
+          "./pypi/all.json?sha256=d91f668f717d430fd845ce3757de3250996979b20dfdd5527751b59dbf488e66",
+          "./extensions/@jupyterlite/pyodide-kernel-extension/static/pypi/all.json?sha256=5afc40dd88dbed5a558f0cb20d448fecdda9027b830eb565356a4e4e942a77f7"
         ]
       }
     },
