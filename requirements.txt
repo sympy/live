@@ -4,5 +4,5 @@
 # https://jupyterlite-pyodide-kernel.readthedocs.io/en/latest/#compatibility
 # https://pyodide.org/en/0.27.4/usage/packages-in-pyodide.html
 # We constrain/pin them to avoid breaking changes on rebuilds.
-jupyterlite-core>=0.5.0,<0.6.0a4
+jupyterlite-core>=0.5.0,<0.7.0
 jupyterlite-pyodide-kernel==0.6.0a4
