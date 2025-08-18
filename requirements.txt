@@ -1,16 +1,8 @@
 # Core modules and Pyodide kernel (mandatory)
-# Pyodide kernel version 0.5.1 comes with Pyodide 0.27.1
+# Pyodide kernel version 0.6.0a4 comes with Pyodide 0.27.4
 # which in-turn comes with SymPy 1.13.3:
-# https://jupyterlite-pyodide-kernel.readthedocs.io/en/stable/#compatibility
-# https://pyodide.org/en/stable/usage/packages-in-pyodide.html
+# https://jupyterlite-pyodide-kernel.readthedocs.io/en/latest/#compatibility
+# https://pyodide.org/en/0.27.4/usage/packages-in-pyodide.html
 # We constrain/pin them to avoid breaking changes on rebuilds.
-jupyterlite-core>=0.5.0,<0.6.0
-jupyterlite-pyodide-kernel==0.5.1
-
-# For jlpm
-jupyterlab
-
-# Specific to generating SymPy Live index page
-jinja2==3.1.5
-babel==2.16.0
-./repl-theme-bridge/ # dark theme for the REPL
+jupyterlite-core>=0.5.0,<0.7.0
+jupyterlite-pyodide-kernel==0.6.1
