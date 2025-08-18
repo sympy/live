@@ -22,6 +22,18 @@
 
 {% block extrahead %}
 
+<!-- Host-side bridge to control the JupyterLite iframe -->
+<script type="module">
+  import { createBridge } from 'https://cdn.jsdelivr.net/npm/jupyter-iframe-commands-host/+esm';
+
+  // Create a bridge bound to our iframe
+  // Expose it so main.js can use it without being a module
+  window.commandBridge = createBridge({ iframeId: 'live-iframe' });
+
+  window.commandBridge.listCommands().then(cmds => console.debug('[bridge] commands', cmds)); // debug
+</script>
+
+
 <!-- MathJax 3 -->
 <script>window.MathJax = {"tex": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]]}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
 <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
