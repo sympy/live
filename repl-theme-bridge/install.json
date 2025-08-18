@@ -1,5 +1,0 @@
-{
-  "packageManager": "python",
-  "packageName": "sympy-live-repl-theme-bridge",
-  "uninstallInstructions": "Use your Python package manager (pip, conda, etc.) to uninstall the package sympy_live_repl_theme_bridge"
-}
