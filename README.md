@@ -80,11 +80,9 @@ and modify one line in `templates/index.html` to load the iframe from localhost 
    This wheel will be indexed by JupyterLite via the `jupyter_lite_config.json` file and made available to the Pyodide kernel for the REPL app for installation.
 3. Optionally, run `unvendor_tests_from_wheel.py custom_wheels` with a PEP 723 compatible script runner such as `pipx`, `uv`, `hatch`, etc. to remove the tests from the downloaded wheel, reducing its size.
 4. Run the command `jupyter lite build` to build the JupyterLab static site, placing the results in `_output/`.
-5. Edit [`templates/index.html`](https://github.com/sympy/live/blob/main/templates/index.html#L3)
-    to change the value of `host` from `https://www.sympy.org/live` to `http://127.0.0.1:8000`.
-6. Run `generate_index.py` with a PEP 723 compatible script runner such as `pipx`, `uv`, `hatch`, etc. to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
-7. Run a local web server in the directory `_output/`. For example, you can run `cd _output/` followed by `python3 -m http.server 8000`.
-8. Open `http://127.0.0.1:8000/index.html` in your browser.
+5. Run `generate_index.py` with a PEP 723 compatible script runner such as `pipx`, `uv`, `hatch`, etc. to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
+6. Run a local web server in the directory `_output/`. For example, you can run `cd _output/` followed by `python3 -m http.server 8000`.
+7. Open `http://127.0.0.1:8000/index.html` in your browser.
 
 
 
