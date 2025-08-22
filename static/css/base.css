@@ -726,3 +726,59 @@ code {
   color: var(--text-color);
   border-color: var(--border-color);
 }
+
+#content .title-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0 0 0.25rem 0;
+}
+#content .title-bar .title-text {
+  margin: 0;
+}
+
+#content .title-bar .theme-toggle {
+  margin-left: auto;
+  font: inherit;
+  line-height: 1;
+  padding: 0 0.15em;
+  color: inherit;
+  cursor: pointer;
+  appearance: none;
+  /* TODO: drop the !importants */
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#content .title-bar .theme-toggle:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+/* Icon inherits h1 size; turn to SymPy green on hover */
+#content .title-bar .theme-toggle .fa-solid {
+  font-size: 1em;
+  vertical-align: baseline;
+  transition: color 0.15s ease;
+}
+#content .title-bar .theme-toggle:hover .fa-solid {
+  color: var(--link-color);
+}
+
+#content .title-bar .theme-toggle:hover,
+#content .title-bar .theme-toggle:active {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#content .repl-skeleton {
+  block-size: 500px;
+  inline-size: 100%;
+  background: var(--content-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 7px;
+}
