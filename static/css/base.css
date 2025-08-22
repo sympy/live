@@ -168,10 +168,6 @@ header img {
 }
 
 #main-navigation ul {
-  -webkit-transition: all 300ms ease-in-out;
-  -moz-transition: all 300ms ease-in-out;
-  -ms-transition: all 300ms ease-in-out;
-  -o-transition: all 300ms ease-in-out;
   transition: all 300ms ease-in-out;
   font-size: 0.9em;
 }
@@ -241,9 +237,6 @@ header img {
   background: #370c19;
   color: #fff !important;
   border-radius: 3px;
-  -moz-transition: all 0.3s ease-in-out;
-  -webkit-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 
@@ -399,9 +392,6 @@ footer a:active {
     background: none;
     border: 0;
     border-radius: 5px;
-    -moz-transition: all 0.3s ease-in-out;
-    -webkit-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
   }
 
@@ -530,9 +520,6 @@ button {
   font-family: inherit;
   border: 0;
   color: #fff;
-  -moz-transition: all 0.3s ease-in;
-  -webkit-transition: all 0.3s ease-in;
-  -o-transition: all 0.3s ease-in;
   transition: all 0.3s ease-in;
   margin: 0;
   cursor: pointer;
@@ -544,7 +531,7 @@ button.disabled {
 
 textarea {
   border: 1px solid #ccc;
-  -webkit-appearance: none;
+  appearance: none;
 }
 
 select {
@@ -585,19 +572,11 @@ code {
 }
 
 .dropdown.open h3:before {
-  -moz-transform: rotate(180deg);
-  -webkit-transform: rotate(180deg);
-  -o-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 
 .dropdown div {
   display: none;
-  -webkit-transition: all 300ms ease-out;
-  -moz-transition: all 300ms ease-out;
-  -ms-transition: all 300ms ease-out;
-  -o-transition: all 300ms ease-out;
   transition: all 300ms ease-out;
   overflow: hidden;
 }
