@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
-<!-- reset when done -->
-{% set host = "http://127.0.0.1:5500/_output" %}
-{% set path = "/repl/" %}
+{% set path = "repl/" %}
 {% set query = "?toolbar=1&kernel=python" %}
 {% set preinitcode = "\n".join([
     "%pip install sympy==" ~ sympy_version
@@ -63,7 +61,7 @@
   $(document).ready(function() {
     // default iframe src with SymPy initcode
     // see https://jupyterlite.readthedocs.io/en/stable/quickstart/embed-repl.html#configuration for URL customisation
-    var iframe_src = "{{ host }}{{ path }}{{ query|safe }}&code={{ preinitcode|urlencode }}&code={{ initcode|urlencode }}";
+    var iframe_src = "/{{ path }}{{ query|safe }}&code={{ preinitcode|urlencode }}&code={{ initcode|urlencode }}";
     // check if we have additional statements to evaluate in the query string
     var statements = getURLParameter('evaluate');
     if (statements) {
