@@ -93,11 +93,13 @@
 
 {% block content %}
 
-  <h1>SymPy Live
-    <button class="theme-toggle" aria-label="Toggle theme">
-      <span class="theme-emoji">☀️</span>
+  <div class="title-bar">
+    <h1 class="title-text">SymPy Live</h1>
+    <button class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+      <i class="fa-solid" aria-hidden="true"></i>
+      <span class="sr-only">Toggle theme</span>
     </button>
-  </h1>
+  </div>
 
   <iframe
       id="live-iframe"
