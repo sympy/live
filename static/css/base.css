@@ -782,3 +782,17 @@ code {
   border: 1px solid var(--border-color);
   border-radius: 7px;
 }
+
+/* Theme toggle improvements */
+.theme-toggle:hover .fa-solid {
+  color: var(--link-color);
+}
+
+/* Dark theme header text should be white */
+[data-theme="dark"] header h1,
+[data-theme="dark"] header h1 a:link,
+[data-theme="dark"] header h1 a:active,
+[data-theme="dark"] header h1 a:hover,
+[data-theme="dark"] header h1 a:visited {
+  color: #fff;
+}
