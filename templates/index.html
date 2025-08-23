@@ -5,6 +5,7 @@
 {% set preinitcode = "\n".join([
     "%pip install sympy==" ~ sympy_version
 ]) %}
+
 {% set initcode = "\n".join([
     "from sympy import *",
     "init_printing()",
@@ -16,12 +17,15 @@
 {% block title %}SymPy Live Shell{% endblock %}
 {% block titleh1 %}SymPy Live Shell{% endblock %}
 
+
 {% block extrahead %}
+
 <!-- MathJax 3 -->
 <script>window.MathJax = {"tex": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]]}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
 <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-<!-- URL parameter handler -->
+
+<!-- handler for evaluate commands -->
 <script>
   function getURLParameter(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
@@ -43,10 +47,11 @@
   }
 
   $(document).ready(function() {
-    // Build iframe src with SymPy initialization code
+    // default iframe src with SymPy initcode
+    // see https://jupyterlite.readthedocs.io/en/stable/quickstart/embed-repl.html#configuration for URL customisation
     var iframe_src = "/{{ path }}{{ query|safe }}&code={{ preinitcode|urlencode }}&code={{ initcode|urlencode }}";
-    
-    // Check for additional evaluation statements in query string
+
+    // check if we have additional statements to evaluate in the query string
     var statements = getURLParameter('evaluate');
     if (statements) {
       codes = statementsToCodes(statements);
@@ -75,11 +80,19 @@
   }
 </script>
 
-<!-- JupyterLite config -->
+<!--  # jupyter-config-data
+      The JSON in `jupyter-lite.json` is the last that will be loaded by most
+      child `index.html` pages, and every field can be overridden.
+      See the recognized schema as described in the documentation:           -->
 <script id="jupyter-config-data" type="application/json" data-jupyter-lite-root=".">
   {}
 </script>
+
 {% endblock %}
+
+
+
+
 
 {% block content %}
   <div class="title-bar">
@@ -92,7 +105,7 @@
 
   <iframe
       id="live-iframe"
-      name="sympy_live_repl"
+      name="sympy-live-repl"
       src=""
       width="100%"
       height="500px"
@@ -110,9 +123,14 @@
         </p>
       </div>
   </div>
+
 {% endblock %}
 
+
+
+
 {% block sidebar %}
+
 <div id="about_shell" class="sidebar_card">
   <h3>{% trans %}About this page{% endtrans %}</h3>
   <p>
@@ -132,6 +150,7 @@
     {% trans %}It can take up to 30 seconds before the shell code and libraries load completely and become available for using interactively.{% endtrans %}
   </p>
 </div>
+
 
 <div id="examples" class="sidebar_card">
     <h3>Example session</h3>
@@ -155,6 +174,7 @@
   </div>
 </div>
 
+
 <div id="quick_links" class="sidebar_card">
   <h3>{% trans %}Quick Links{% endtrans %}</h3>
   <ul>
@@ -172,4 +192,5 @@
     <li><a href="http://colabti.org/irclogger/irclogger_logs/sympy">{% trans %}IRC channel logs{% endtrans %}</a></li>
   </ul>
 </div>
+
 {% endblock %}
