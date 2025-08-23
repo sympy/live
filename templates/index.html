@@ -56,8 +56,23 @@
       }
     }
     
+    // Add theme parameter based on initial theme
+    iframe_src = addThemeToUrl(iframe_src);
+    
     $('#live-iframe').prop("src", iframe_src);
   });
+
+  function addThemeToUrl(url) {
+    var mode = localStorage.getItem("theme-mode") || "light";
+    var effective = mode === "auto" ? 
+      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : 
+      mode;
+    
+    if (effective === "dark") {
+      return url + "&theme=" + encodeURIComponent("JupyterLab Dark");
+    }
+    return url;
+  }
 </script>
 
 <!-- JupyterLite config -->
