@@ -1,22 +1,35 @@
 // JavaScript for the main SymPy Live Shell index.
 $(document).ready(function () {
   console.log("Loaded custom index.html (SymPy live shell inside an iframe)");
-  initializeIframeAndTheme();
+  initializeTheme();
 });
 
-const themeState = {
-  isIframeReady: false,
-  debugMode: true,
-  currentKernelTheme: null, // Track kernel theme state
-};
+let commandBridge = null;
+let bridgeReady = false;
+let bridgeInitializing = false;
 
-function debug(message, data) {
-  if (!themeState.debugMode) return;
-  const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] 🔍 ${message}`, data || "");
+function initializeTheme() {
+  console.log("Initializing theme...");
+
+  const mode = getThemeMode();
+  const effective = computeEffectiveTheme(mode);
+  updateHostTheme(mode, effective);
+
+  setupThemeToggle();
+  setupMediaQueryListener();
+
+  setupIframeCommunication();
 }
 
-function getEffectiveTheme(mode) {
+function getThemeMode() {
+  return localStorage.getItem("theme-mode") || "light";
+}
+
+function setThemeMode(mode) {
+  localStorage.setItem("theme-mode", mode);
+}
+
+function computeEffectiveTheme(mode) {
   if (mode === "auto") {
     return window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
@@ -25,144 +38,162 @@ function getEffectiveTheme(mode) {
   return mode;
 }
 
-function updateUI(mode, effectiveTheme) {
-  document.documentElement.setAttribute("data-theme", effectiveTheme);
+function updateHostTheme(mode, effective) {
+  document.documentElement.setAttribute("data-theme", effective);
 
-  const themeEmoji = document.querySelector(".theme-emoji");
-  const themeText = document.querySelector(".theme-text");
-  if (themeEmoji && themeText) {
-    themeEmoji.textContent = {
-      light: "☀️",
-      dark: "🌙",
-      auto: "🌗",
-    }[mode];
-    themeText.textContent = {
-      light: "Light",
-      dark: "Dark",
-      auto: "Auto",
-    }[mode];
-  }
-}
-
-function shouldUpdateKernelTheme(mode, effectiveTheme) {
-  // For light/dark modes, always enforce the mode
-  if (mode === "light" || mode === "dark") {
-    const desiredKernelTheme =
-      mode === "dark" ? "JupyterLab Dark" : "JupyterLab Light";
-    return themeState.currentKernelTheme !== desiredKernelTheme;
-  }
-
-  // For auto mode, only change if kernel theme doesn't match content theme
-  if (mode === "auto") {
-    const desiredKernelTheme =
-      effectiveTheme === "dark" ? "JupyterLab Dark" : "JupyterLab Light";
-    return themeState.currentKernelTheme !== desiredKernelTheme;
-  }
-
-  return false;
-}
-
-function sendThemeToIframe(theme) {
-  if (!themeState.isIframeReady) return;
-
-  const jupyterTheme =
-    theme === "dark" ? "JupyterLab Dark" : "JupyterLab Light";
-
-  // Only send if we need to change
-  if (jupyterTheme !== themeState.currentKernelTheme) {
-    debug(
-      `Sending theme to iframe: ${jupyterTheme} (current: ${themeState.currentKernelTheme})`
-    );
-
-    try {
-      const message = {
-        type: "from-host-to-iframe",
-        theme: jupyterTheme,
-      };
-
-      const iframe = document.getElementById("live-iframe");
-      if (iframe?.contentWindow) {
-        iframe.contentWindow.postMessage(message, "*");
-      }
-      if (window.frames.jupyterlab) {
-        window.frames.sympy_live_repl.postMessage(message, "*");
-      }
-
-      themeState.currentKernelTheme = jupyterTheme;
-    } catch (e) {
-      debug("Error sending theme message:", e);
+  const icon = document.querySelector(".theme-toggle .fa-solid");
+  if (icon) {
+    icon.classList.remove("fa-sun", "fa-moon", "fa-circle-half-stroke");
+    if (mode === "auto") {
+      icon.classList.add("fa-circle-half-stroke");
+    } else if (effective === "dark") {
+      icon.classList.add("fa-moon");
+    } else {
+      icon.classList.add("fa-sun");
     }
-  } else {
-    debug(`Skipping kernel theme update - already ${jupyterTheme}`);
+  }
+
+  console.log("Host theme updated:", { mode, effective });
+}
+
+// Theme toggle functionality
+function setupThemeToggle() {
+  const toggleButton = document.querySelector(".theme-toggle");
+  if (toggleButton) {
+    toggleButton.addEventListener("click", handleThemeToggle);
   }
 }
 
-// Pre-send theme update to kernel as it is slower to update
-// than the rest of the UI. We use this to reduce latency.
-function setTheme(mode, isInitial = false) {
-  if (themeState.isTransitioning) return;
-  themeState.isTransitioning = true;
-
-  debug(`Setting theme mode: ${mode} (initial: ${isInitial})`);
-  localStorage.setItem("theme-mode", mode);
-
-  const effectiveTheme = getEffectiveTheme(mode);
-  debug(`Effective theme: ${effectiveTheme}`);
-
-  if (shouldUpdateKernelTheme(mode, effectiveTheme)) {
-    sendThemeToIframe(effectiveTheme);
-  }
-
-  setTimeout(() => {
-    updateUI(mode, effectiveTheme);
-    themeState.isTransitioning = false;
-  }, 16); // One frame at 60fps
-}
-
-function cycleTheme() {
-  const currentMode = localStorage.getItem("theme-mode") || "light";
+function handleThemeToggle() {
   const modes = ["light", "dark", "auto"];
-  const nextMode = modes[(modes.indexOf(currentMode) + 1) % modes.length];
-  setTheme(nextMode);
+  const currentMode = getThemeMode();
+  const currentIndex = modes.indexOf(currentMode);
+  const nextMode = modes[(currentIndex + 1) % modes.length];
+
+  console.log("Theme toggle clicked:", currentMode, "→", nextMode);
+
+  setThemeMode(nextMode);
+  const effective = computeEffectiveTheme(nextMode);
+  updateHostTheme(nextMode, effective);
+
+  updateIframeTheme(effective);
 }
 
-function initializeIframeAndTheme() {
-  debug("Starting initialization");
+// Media query listener, for auto mode (when we use the user's settings
+// to determine their intent)
+function setupMediaQueryListener() {
+  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  mediaQuery.addEventListener("change", handleMediaQueryChange);
+}
 
-  // Listen for theme confirmations from iframe
-  window.addEventListener("message", (event) => {
-    if (event.data.type === "from-iframe-to-host") {
-      debug("Theme confirmation from iframe:", event.data.theme);
-      themeState.currentKernelTheme = event.data.theme;
-    }
-  });
+function handleMediaQueryChange() {
+  const mode = getThemeMode();
+  if (mode === "auto") {
+    const effective = computeEffectiveTheme("auto");
+    updateHostTheme("auto", effective);
+    updateIframeTheme(effective);
+    console.log("Media query changed, auto theme updated to:", effective);
+  }
+}
 
-  const liveIframe = document.getElementById("live-iframe");
-  if (liveIframe) {
-    liveIframe.addEventListener("load", () => {
-      debug("Iframe loaded");
-      setTimeout(() => {
-        themeState.isIframeReady = true;
-        debug("JupyterLite initialization complete");
-        const savedMode = localStorage.getItem("theme-mode") || "light";
-        setTheme(savedMode, true);
-      }, 2000);
+function setupIframeCommunication() {
+  const iframe = document.getElementById("live-iframe");
+  if (iframe) {
+    iframe.addEventListener("load", function () {
+      console.log("Iframe loaded, attempting bridge initialization...");
+      setTimeout(initializeBridge, 3000);
     });
   }
+}
 
-  const themeToggle = document.querySelector(".theme-toggle");
-  if (themeToggle) {
-    themeToggle.addEventListener("click", cycleTheme);
+async function initializeBridge() {
+  if (bridgeReady || bridgeInitializing) {
+    console.log("Bridge already ready or initializing");
+    return commandBridge;
   }
 
-  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-  mediaQuery.addEventListener("change", () => {
-    const currentMode = localStorage.getItem("theme-mode") || "light";
-    if (currentMode === "auto") {
-      setTheme("auto");
-    }
-  });
+  bridgeInitializing = true;
 
-  const savedMode = localStorage.getItem("theme-mode") || "light";
-  setTheme(savedMode, true);
+  try {
+    console.log("Loading bridge module...");
+    const { createBridge } = await import(
+      "https://esm.run/jupyter-iframe-commands-host@latest"
+    );
+
+    console.log("Creating bridge...");
+    commandBridge = createBridge({ iframeId: "live-iframe" });
+
+    console.log("Testing bridge connection...");
+
+    try {
+      const commands = await commandBridge.listCommands();
+      console.log("Bridge connected. Available commands:", commands.length);
+
+      const themeCommand = commands.find(
+        (cmd) => cmd.id === "apputils:change-theme"
+      );
+      console.log("Theme command available:", !!themeCommand);
+
+      bridgeReady = true;
+      bridgeInitializing = false;
+
+      const mode = getThemeMode();
+      const effective = computeEffectiveTheme(mode);
+      await updateIframeTheme(effective);
+
+      return commandBridge;
+    } catch (commandError) {
+      console.log("Bridge not ready, waiting 2 seconds...");
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      const commands = await commandBridge.listCommands();
+      console.log(
+        "Bridge connected after retry. Available commands:",
+        commands.length
+      );
+
+      const themeCommand = commands.find(
+        (cmd) => cmd.id === "apputils:change-theme"
+      );
+      console.log("Theme command available:", !!themeCommand);
+
+      bridgeReady = true;
+      bridgeInitializing = false;
+
+      const mode = getThemeMode();
+      const effective = computeEffectiveTheme(mode);
+      await updateIframeTheme(effective);
+
+      return commandBridge;
+    }
+  } catch (error) {
+    console.error("Bridge initialization failed:", error);
+    commandBridge = null;
+    bridgeReady = false;
+    bridgeInitializing = false;
+    return null;
+  }
+}
+
+async function updateIframeTheme(effective) {
+  if (!bridgeReady && !bridgeInitializing) {
+    console.log("Bridge not ready, attempting to initialize...");
+    await initializeBridge();
+  }
+
+  if (!bridgeReady || !commandBridge) {
+    console.log("Bridge not ready, cannot update iframe theme");
+    return;
+  }
+
+  const themeName =
+    effective === "dark" ? "JupyterLab Dark" : "JupyterLab Light";
+
+  try {
+    console.log("Applying theme to iframe:", themeName);
+    await commandBridge.execute("apputils:change-theme", { theme: themeName });
+    console.log("Iframe theme applied successfully:", themeName);
+  } catch (error) {
+    console.error("Failed to apply theme to iframe:", error);
+  }
 }
