@@ -136,40 +136,12 @@ async function initializeBridge() {
     );
 
     commandBridge = createBridge({ iframeId: "live-iframe" });
+    await commandBridge.ready;
 
-    try {
-      const commands = await commandBridge.listCommands();
-      const themeCommand = commands.find(
-        (cmd) => cmd.id === "apputils:change-theme"
-      );
-      console.log("Theme command available:", !!themeCommand);
+    bridgeReady = true;
+    bridgeInitializing = false;
 
-      bridgeReady = true;
-      bridgeInitializing = false;
-
-      const mode = getThemeMode();
-      const effective = computeEffectiveTheme(mode);
-      await updateIframeTheme(effective);
-
-      return commandBridge;
-    } catch (commandError) {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      const commands = await commandBridge.listCommands();
-
-      const themeCommand = commands.find(
-        (cmd) => cmd.id === "apputils:change-theme"
-      );
-
-      bridgeReady = true;
-      bridgeInitializing = false;
-
-      const mode = getThemeMode();
-      const effective = computeEffectiveTheme(mode);
-      await updateIframeTheme(effective);
-
-      return commandBridge;
-    }
+    return commandBridge;
   } catch (error) {
     console.error("Bridge initialization failed:", error);
     commandBridge = null;
