@@ -3,6 +3,7 @@
   /* Light theme variables */
   --bg-color: #eee;
   --text-color: #222;
+  --footer-text-color: #fff;
   --link-color: #4faf00;
   --link-visited: #577c37;
   --header-color: #3b5526;
@@ -417,7 +418,7 @@ header img {
 
 /* Footer */
 footer {
-  color: var(--text-color);
+  color: var(--footer-text-color);
   background: var(--nav-bg);
   border-color: var(--border-color);
   padding: 0.25em 0.5em;
@@ -704,7 +705,7 @@ footer a:active {
 
 [data-theme="dark"] footer {
   background-color: var(--nav-bg);
-  color: var(--text-color);
+  color: var(--footer-text-color);
   border-color: var(--border-color);
 }
 
