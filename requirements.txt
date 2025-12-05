@@ -1,7 +1,11 @@
 # Core modules and Pyodide kernel (mandatory)
-# Pyodide kernel version 0.7.0a1 comes with Pyodide 0.28.1:
+# Pyodide kernel version 0.7.0 comes with Pyodide 0.29.*
+# which in-turn comes with SymPy 1.13.3:
 # https://jupyterlite-pyodide-kernel.readthedocs.io/en/latest/#compatibility
-# https://pyodide.org/en/0.28.1/usage/packages-in-pyodide.html
+# https://pyodide.org/en/0.29.0/usage/packages-in-pyodide.html
 # We constrain/pin them to avoid breaking changes on rebuilds.
-jupyterlite-core==0.7.0a3
-jupyterlite-pyodide-kernel==0.7.0a1
+jupyterlite-core>=0.7.0,<0.8.0
+jupyterlite-pyodide-kernel==0.7.0
+
+# Dark theme bridge for the REPL (optional but recommended)
+jupyter-iframe-commands
