@@ -93,9 +93,15 @@ function handleThemeToggle() {
 
   setThemeMode(nextMode);
   const effective = computeEffectiveTheme(nextMode);
-  updateHostTheme(nextMode, effective);
 
-  updateIframeTheme(effective);
+  async function updateIframeThenHostTheme() {
+    
+    await updateIframeTheme(effective);
+    updateHostTheme(nextMode, effective);
+  }
+
+  updateIframeThenHostTheme();
+  
 }
 
 // Media query listener, for auto mode (when we use the user's settings
