@@ -1,0 +1,28 @@
+{
+  "sympy": {
+    "releases": {
+      "1.14.0": [
+        {
+          "comment_text": "",
+          "digests": {
+            "md5": "c0e3c267a756255448957e8319aa6d64",
+            "sha256": "ecdb496f40d203a9fece116b61f67be1cd8798b03290c3bdabc4f54c58a92bc5"
+          },
+          "downloads": -1,
+          "filename": "sympy-1.14.0-py3-none-any.whl",
+          "has_sig": false,
+          "md5_digest": "c0e3c267a756255448957e8319aa6d64",
+          "packagetype": "bdist_wheel",
+          "python_version": "py3",
+          "requires_python": ">=3.9",
+          "size": 4185567,
+          "upload_time": "2025-12-13T03:22:28.689766Z",
+          "upload_time_iso_8601": "2025-12-13T03:22:28.689766Z",
+          "url": "./sympy-1.14.0-py3-none-any.whl",
+          "yanked": false,
+          "yanked_reason": null
+        }
+      ]
+    }
+  }
+}
