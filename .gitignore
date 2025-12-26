@@ -117,3 +117,6 @@ _output
 
 # Downloaded wheels for SymPy
 *.whl
+
+# Virtual environments
+.venv/
