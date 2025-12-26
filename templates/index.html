@@ -63,8 +63,17 @@
     
     // Add theme parameter based on initial theme
     iframe_src = addThemeToUrl(iframe_src);
-    
-    $('#live-iframe').prop("src", iframe_src);
+
+    var iframe = $('#live-iframe');
+    var loader = $('#repl-loader');
+    iframe.on('load', function() {
+      setTimeout(function() {
+        loader.addClass('is-hidden');
+        iframe.addClass('is-ready');
+      }, 350);
+    });
+
+    iframe.prop("src", iframe_src);
   });
 
   function addThemeToUrl(url) {
@@ -103,14 +112,21 @@
     </button>
   </div>
 
-  <iframe
-      id="live-iframe"
-      name="sympy-live-repl"
-      src=""
-      width="100%"
-      height="500px"
-  >
-  </iframe>
+  <div class="repl-frame-wrapper">
+    <div id="repl-loader" aria-hidden="true">
+      <div class="loader-spinner" aria-hidden="true"></div>
+      <span class="loader-text">Loading SymPy Live…</span>
+    </div>
+    <iframe
+        id="live-iframe"
+        name="sympy-live-repl"
+        src=""
+        width="100%"
+        height="500px"
+        loading="lazy"
+    >
+    </iframe>
+  </div>
 
   <div id="usage" class="sidebar_card">
       <h3>Instructions</h3>
