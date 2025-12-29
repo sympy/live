@@ -1,11 +1,21 @@
-# Core modules and Pyodide kernel (mandatory)
-# Pyodide kernel version 0.7.0 comes with Pyodide 0.29.*
-# which in-turn comes with SymPy 1.13.3:
+﻿## Core modules and Pyodide kernel (mandatory)
+# Pyodide kernel version 0.7.0 ships with Pyodide 0.29.*
+# which bundles SymPy 1.13.3:
 # https://jupyterlite-pyodide-kernel.readthedocs.io/en/latest/#compatibility
 # https://pyodide.org/en/0.29.0/usage/packages-in-pyodide.html
-# We constrain/pin them to avoid breaking changes on rebuilds.
-jupyterlite-core>=0.7.0,<0.8.0
+# Pinning avoids rebuild regressions when upstream releases new versions.
+babel==2.17.0
+cloudpickle==3.1.2
+doit==0.36.0
+importlib_metadata==8.7.1
+Jinja2==3.1.6
+jupyter_core==5.9.1
+jupyter_iframe_commands==0.3.0
+jupyterlite-core==0.7.1
 jupyterlite-pyodide-kernel==0.7.0
+MarkupSafe==3.0.3
+pkginfo==1.12.1.2
+platformdirs==4.5.1
+traitlets==5.14.3
+zipp==3.23.0
 
-# Dark theme bridge for the REPL (optional but recommended)
-jupyter-iframe-commands
