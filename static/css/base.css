@@ -512,6 +512,13 @@ footer a:active {
 /* Iframe Styling */
 .repl-frame-wrapper {
   position: relative;
+  background: var(--content-bg);
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .repl-frame-wrapper {
+  background: #111318;
 }
 
 #repl-loader {
