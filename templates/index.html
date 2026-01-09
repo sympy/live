@@ -66,11 +66,47 @@
 
     var iframe = $('#live-iframe');
     var loader = $('#repl-loader');
-    iframe.on('load', function() {
-      setTimeout(function() {
+    var revealTriggered = false;
+    var fallbackTimer = null;
+
+    iframe.css('visibility', 'hidden').attr('aria-hidden', 'true');
+
+    function revealIframe() {
+      if (revealTriggered) {
+        return;
+      }
+      revealTriggered = true;
+      window.removeEventListener('message', handleBridgeReady);
+      if (fallbackTimer) {
+        clearTimeout(fallbackTimer);
+      }
+      // Allow the iframe to fade in only after the bridge confirms theme readiness.
+      window.setTimeout(function() {
         loader.addClass('is-hidden');
-        iframe.addClass('is-ready');
-      }, 350);
+        iframe
+          .addClass('is-ready')
+          .css('visibility', 'visible')
+          .attr('aria-hidden', 'false');
+      }, 150);
+    }
+
+    function handleBridgeReady(event) {
+      if (!event.data || event.data.type !== '_JUPYTER_IFRAME_COMMANDS_LOADED') {
+        return;
+      }
+      revealIframe();
+    }
+
+    window.addEventListener('message', handleBridgeReady);
+
+    iframe.on('load', function() {
+      if (revealTriggered) {
+        return;
+      }
+      if (fallbackTimer) {
+        clearTimeout(fallbackTimer);
+      }
+      fallbackTimer = window.setTimeout(revealIframe, 3500);
     });
 
     iframe.prop("src", iframe_src);
