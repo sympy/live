@@ -4,7 +4,8 @@
   --bg-color: #eee;
   --text-color: #222;
   --footer-text-color: #fff;
-  --link-color: #2f6d00;
+  /* --link-color: #2f6d00; */
+  --link-color: #0b6623;
   --link-visited: #255300;
   --header-color: #3b5526;
   --nav-bg: #3b5526;
@@ -16,8 +17,10 @@
 [data-theme="dark"] {
   --bg-color: #14181d;
   --text-color: #e4e4e4;
-  --link-color: #9dd964;
-  --link-visited: #86c056;
+  /* --link-color: #9dd964;
+  --link-visited: #86c056; */
+  --link-color: #bfeaa0;
+  --link-visited: #9fd06a;
   --header-color: #81b953;
   --nav-bg: #1a1f25;
   --content-bg: #1e242c;
@@ -78,7 +81,7 @@ a {
 
 a:link {
   color: var(--link-color);
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 a:visited,
@@ -89,6 +92,12 @@ a:active {
 
 a:hover {
   text-decoration: underline;
+}
+
+/* Making links visibly identifiable without relying on color alone */
+a:focus-visible {
+  outline: 3px solid var(--link-color);
+  outline-offset: 2px;
 }
 
 /* Code and Pre */
