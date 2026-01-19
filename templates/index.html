@@ -46,7 +46,7 @@
     return codes;
   }
 
-  $(document).ready(function() {
+  document.addEventListener('DOMContentLoaded', function() {
     // default iframe src with SymPy initcode
     // see https://jupyterlite.readthedocs.io/en/stable/quickstart/embed-repl.html#configuration for URL customisation
     var iframe_src = "/{{ path }}{{ query|safe }}&code={{ preinitcode|urlencode }}&code={{ initcode|urlencode }}";
@@ -54,22 +54,25 @@
     // check if we have additional statements to evaluate in the query string
     var statements = getURLParameter('evaluate');
     if (statements) {
-      codes = statementsToCodes(statements);
+      var codes = statementsToCodes(statements);
       console.log("Additional code to evaluate:", codes);
-      for (const idx in codes) {
-        iframe_src += '&code=' + encodeURIComponent(codes[idx]);
+      for (var i = 0; i < codes.length; i++) {
+        iframe_src += '&code=' + encodeURIComponent(codes[i]);
       }
     }
     
     // Add theme parameter based on initial theme
     iframe_src = addThemeToUrl(iframe_src);
 
-    var iframe = $('#live-iframe');
-    var loader = $('#repl-loader');
+    var iframe = document.getElementById('live-iframe');
+    var loader = document.getElementById('repl-loader');
     var revealTriggered = false;
     var fallbackTimer = null;
 
-    iframe.css('visibility', 'hidden').attr('aria-hidden', 'true');
+    if (iframe) {
+      iframe.style.visibility = 'hidden';
+      iframe.setAttribute('aria-hidden', 'true');
+    }
 
     function revealIframe() {
       if (revealTriggered) {
@@ -82,11 +85,12 @@
       }
       // Allow the iframe to fade in only after the bridge confirms theme readiness.
       window.setTimeout(function() {
-        loader.addClass('is-hidden');
-        iframe
-          .addClass('is-ready')
-          .css('visibility', 'visible')
-          .attr('aria-hidden', 'false');
+        if (loader) loader.classList.add('is-hidden');
+        if (iframe) {
+          iframe.classList.add('is-ready');
+          iframe.style.visibility = 'visible';
+          iframe.setAttribute('aria-hidden', 'false');
+        }
       }, 150);
     }
 
@@ -99,17 +103,19 @@
 
     window.addEventListener('message', handleBridgeReady);
 
-    iframe.on('load', function() {
-      if (revealTriggered) {
-        return;
-      }
-      if (fallbackTimer) {
-        clearTimeout(fallbackTimer);
-      }
-      fallbackTimer = window.setTimeout(revealIframe, 3500);
-    });
+    if (iframe) {
+      iframe.addEventListener('load', function() {
+        if (revealTriggered) {
+          return;
+        }
+        if (fallbackTimer) {
+          clearTimeout(fallbackTimer);
+        }
+        fallbackTimer = window.setTimeout(revealIframe, 3500);
+      });
 
-    iframe.prop("src", iframe_src);
+      iframe.src = iframe_src;
+    }
   });
 
   function addThemeToUrl(url) {
@@ -156,6 +162,7 @@
     <iframe
         id="live-iframe"
         name="sympy-live-repl"
+        title="SymPy Live"
         src=""
         width="100%"
         height="500px"
@@ -165,7 +172,7 @@
   </div>
 
   <div id="usage" class="sidebar_card">
-      <h3>Instructions</h3>
+      <h2>Instructions</h2>
       <div class="content">
         <p>
           {% trans %}Press ENTER to run the code or use the Run button in the toolbar.{% endtrans %}

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark">
     <title>{% block title %}SymPy{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" type="text/css"/>
@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="/static/css/base.css" type="text/css" media="screen" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700|Gentium+Basic" rel="stylesheet" type="text/css" />
     <link rel="icon" href="/static/SymPy-Favicon.ico" />
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     <script type="text/javascript" src="/static/javascript/main.js"></script>
     {% block extrahead %}{% endblock %}
   </head>
@@ -20,7 +19,7 @@
       <header>
         <h1><a href="index.html"> <img src="/static/images/logo.png" alt="SymPy Logo" /> {% block titleh1 %}SymPy{% endblock %}</a></h1>
       </header>
-      <section class="row" id="main">
+      <main class="row" id="main">
         <div class="col span_7 clr small_span_4">
           {% block main %}{% endblock %}
           <article id="content">
@@ -90,7 +89,7 @@
           {% block sidebarextra %}
           {% endblock %}
       </aside>
-    </section>
+      </main>
     <footer class="row">
       <p>Copyright &copy; 2025 SymPy Development Team. </p>
       <p>
