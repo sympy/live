@@ -1,5 +1,5 @@
 // JavaScript for the main SymPy Live Shell index.
-document.addEventListener('DOMContentLoaded', function () {
+$(document).ready(function () {
   initializeTheme();
 });
 
