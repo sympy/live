@@ -4,8 +4,7 @@
   --bg-color: #eee;
   --text-color: #222;
   --footer-text-color: #fff;
-  /* --link-color: #2f6d00; */
-  --link-color: #0b6623;
+  --link-color: #5c8721;
   --link-visited: #255300;
   --header-color: #3b5526;
   --nav-bg: #3b5526;
@@ -17,10 +16,8 @@
 [data-theme="dark"] {
   --bg-color: #14181d;
   --text-color: #e4e4e4;
-  /* --link-color: #9dd964;
-  --link-visited: #86c056; */
-  --link-color: #bfeaa0;
-  --link-visited: #9fd06a;
+  --link-color: #97CB59;
+  --link-visited: #72aa44;
   --header-color: #81b953;
   --nav-bg: #1a1f25;
   --content-bg: #1e242c;
