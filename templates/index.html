@@ -31,14 +31,14 @@
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
   }
 
-  function statementsToCodes(statements) {
-    var statements = statements
+  function statementsToCodes(text) {
+    var parts = text
         .replace('\r\n', '\n')
         .replace('\r', '\n')
         .split(/#--[^\n]*/);
     var codes = [];
-    for (const idx in statements) {
-      statement = statements[idx].trim()
+    for (var i = 0; i < parts.length; i++) {
+      var statement = parts[i].trim();
       if (statement) {
         codes.push(statement);
       }
