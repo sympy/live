@@ -4,8 +4,8 @@
   --bg-color: #eee;
   --text-color: #222;
   --footer-text-color: #fff;
-  --link-color: #4faf00;
-  --link-visited: #577c37;
+  --link-color: #5c8721;
+  --link-visited: #255300;
   --header-color: #3b5526;
   --nav-bg: #3b5526;
   --content-bg: #fff;
@@ -16,8 +16,8 @@
 [data-theme="dark"] {
   --bg-color: #14181d;
   --text-color: #e4e4e4;
-  --link-color: #81b953;
-  --link-visited: #6fa346;
+  --link-color: #97cb57;
+  --link-visited: #72aa44;
   --header-color: #81b953;
   --nav-bg: #1a1f25;
   --content-bg: #1e242c;
@@ -78,7 +78,7 @@ a {
 
 a:link {
   color: var(--link-color);
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 a:visited,
@@ -89,6 +89,12 @@ a:active {
 
 a:hover {
   text-decoration: underline;
+}
+
+/* Making links visibly identifiable without relying on color alone */
+a:focus-visible {
+  outline: 3px solid var(--link-color);
+  outline-offset: 2px;
 }
 
 /* Code and Pre */
@@ -447,6 +453,9 @@ footer a:active {
   align-items: center;
   gap: 0.5rem;
   color: inherit;
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
 }
 
 #content .title-bar {
@@ -474,6 +483,8 @@ footer a:active {
   background-image: none !important;
   border: none !important;
   box-shadow: none !important;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 #content .title-bar .theme-toggle:focus-visible {

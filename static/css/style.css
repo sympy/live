@@ -15,10 +15,16 @@
   margin-left: 15px;
 }
 
-#user-navigation ul li a:link,
-#user-navigation ul li a:visited,
+#user-navigation ul li a:link {
+  color: var(--link-color);
+}
+
+#user-navigation ul li a:visited {
+  color: var(--link-visited);
+}
+
 #user-navigation ul li a:active {
-  color: #3b5526;
+  color: var(--link-color);
 }
 
 #user-navigation ul li a:hover {
@@ -232,11 +238,17 @@ ul.list li .item .avatar {
   margin: 0.1em 0;
 }
 
-#banner a:link,
-#banner a:visited,
+#banner a:link {
+  color: var(--link-color);
+}
+
+#banner a:visited {
+  color: var(--link-visited);
+}
+
 #banner a:hover,
 #banner a:active {
-  color: #81b953;
+  color: var(--link-color);
 }
 
 #get-started a {
