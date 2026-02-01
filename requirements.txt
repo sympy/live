@@ -1,10 +1,10 @@
-﻿## Core modules and Pyodide kernel (mandatory)
+## Core modules and Pyodide kernel (mandatory)
 # Pyodide kernel version 0.7.0 ships with Pyodide 0.29.*
 # which bundles SymPy 1.13.3:
 # https://jupyterlite-pyodide-kernel.readthedocs.io/en/latest/#compatibility
 # https://pyodide.org/en/0.29.0/usage/packages-in-pyodide.html
 # Pinning avoids rebuild regressions when upstream releases new versions.
-babel==2.17.0
+babel==2.18.0
 cloudpickle==3.1.2
 doit==0.36.0
 importlib_metadata==8.7.1
