@@ -15,7 +15,7 @@ jupyterlite-core==0.7.1
 jupyterlite-pyodide-kernel==0.7.0
 MarkupSafe==3.0.3
 pkginfo==1.12.1.2
-platformdirs==4.5.1
+platformdirs==4.9.2
 traitlets==5.14.3
 zipp==3.23.0
 
