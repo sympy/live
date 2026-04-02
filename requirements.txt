@@ -12,7 +12,7 @@ Jinja2==3.1.6
 jupyter_core==5.9.1
 jupyter_iframe_commands==0.3.0
 jupyterlite-core==0.7.4
-jupyterlite-pyodide-kernel==0.7.0
+jupyterlite-pyodide-kernel==0.7.1
 MarkupSafe==3.0.3
 pkginfo==1.12.1.2
 platformdirs==4.9.4
