@@ -7,7 +7,7 @@
 babel==2.18.0
 cloudpickle==3.1.2
 doit==0.37.0
-importlib_metadata==8.7.1
+importlib_metadata==9.0.0
 Jinja2==3.1.6
 jupyter_core==5.9.1
 jupyter_iframe_commands==0.3.0
