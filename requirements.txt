@@ -17,5 +17,5 @@ MarkupSafe==3.0.3
 pkginfo==1.12.1.2
 platformdirs==4.9.4
 traitlets==5.14.3
-zipp==3.23.0
+zipp==3.23.1
 
