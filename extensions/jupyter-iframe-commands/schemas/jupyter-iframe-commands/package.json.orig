@@ -1,0 +1,63 @@
+{
+  "name": "jupyter-iframe-commands",
+  "version": "0.3.0",
+  "description": "\"A JupyterLab extension to facilitate integration with a host page via an IFrame\"",
+  "homepage": "https://github.com/TileDB-Inc/jupyter-iframe-commands#readme",
+  "bugs": {
+    "url": "https://github.com/TileDB-Inc/jupyter-iframe-commands/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TileDB-Inc/jupyter-iframe-commands.git"
+  },
+  "license": "BSD-3-Clause",
+  "author": "QuantStack",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib/"
+  },
+  "files": [
+    "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
+    "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,ttf}",
+    "style/index.js",
+    "src/**/*.{ts,tsx}",
+    "schema/*.json"
+  ],
+  "sideEffects": [
+    "style/**/*"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "jlpm build:lib && jlpm build:labextension:dev",
+    "build:labextension": "jupyter labextension build .",
+    "build:labextension:dev": "jupyter labextension build --development True .",
+    "build:lib": "tsc -b",
+    "build:lib:prod": "tsc",
+    "build:prod": "jlpm run clean && jlpm run build:lib:prod && jlpm run build:labextension",
+    "clean": "jlpm run clean:lib",
+    "clean:all": "jlpm clean:lib && jlpm clean:labextension && jlpm clean:lintcache",
+    "clean:labextension": "rimraf ../../jupyter_iframe_commands/labextension jupyter_iframe_commands/_version.py",
+    "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
+    "clean:lintcache": "rimraf .eslintcache .stylelintcache",
+    "install:extension": "jlpm run build",
+    "watch": "run-p watch:src watch:labextension",
+    "watch:src": "tsc -w --sourceMap",
+    "watch:labextension": "jupyter labextension watch ."
+  },
+  "jupyterlab": {
+    "extension": true,
+    "outputDir": "../../jupyter_iframe_commands/labextension",
+    "schemaDir": "schema"
+  },
+  "dependencies": {
+    "@jupyterlab/application": "^4.3.2",
+    "@jupyterlab/settingregistry": "^4.3.2",
+    "@lumino/coreutils": "^2.2.0"
+  },
+  "devDependencies": {
+    "@jupyterlab/builder": "^4.3.2"
+  }
+}
