@@ -1,0 +1,8 @@
+{
+  "jupyter.lab.shortcuts": [],
+  "title": "jupyter-iframe-commands",
+  "description": "jupyter-iframe-commands settings.",
+  "type": "object",
+  "properties": {},
+  "additionalProperties": false
+}
