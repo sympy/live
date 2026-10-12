@@ -1,18 +1,12 @@
 {% extends "base.html" %}
 
-{% set path = "repl/" %}
-{% set query = "?toolbar=1&kernel=python" %}
-{% set preinitcode = "\n".join([
-    "%pip install sympy==" ~ sympy_version
-]) %}
-
-{% set initcode = "\n".join([
+{% set initcode = [
     "from sympy import *",
     "init_printing()",
     "x, y, z, t = symbols('x y z t')",
     "k, m, n = symbols('k m n', integer=True)",
     "f, g, h = symbols('f g h', cls=Function)"
-]) %}
+] %}
 
 {% block title %}SymPy Live Shell{% endblock %}
 {% block titleh1 %}SymPy Live Shell{% endblock %}
@@ -47,22 +41,27 @@
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    // default iframe src with SymPy initcode
-    // see https://jupyterlite.readthedocs.io/en/stable/quickstart/embed-repl.html#configuration for URL customisation
-    var iframe_src = "/{{ path }}{{ query|safe }}&code={{ preinitcode|urlencode }}&code={{ initcode|urlencode }}";
+    var sympyVersions = {{ sympy_versions|tojson }};
+    var versionPicker = document.getElementById('sympy-version');
+    var initcode = {{ initcode|join("\n")|tojson }};
 
-    // check if we have additional statements to evaluate in the query string
-    var statements = getURLParameter('evaluate');
-    if (statements) {
-      var codes = statementsToCodes(statements);
-      console.log("Additional code to evaluate:", codes);
-      for (var i = 0; i < codes.length; i++) {
-        iframe_src += '&code=' + encodeURIComponent(codes[i]);
+    function getIframeSrc(version) {
+      // see https://jupyterlite.readthedocs.io/en/stable/quickstart/embed-repl.html#configuration for URL customisation
+      var src = "/repl/?toolbar=1&kernel=python";
+      src += '&code=' + encodeURIComponent("%pip install sympy==" + version);
+      src += '&code=' + encodeURIComponent(initcode);
+
+      // check if we have additional statements to evaluate in the query string
+      var statements = getURLParameter('evaluate');
+      if (statements) {
+        var codes = statementsToCodes(statements);
+        console.log("Additional code to evaluate:", codes);
+        for (var i = 0; i < codes.length; i++) {
+          src += '&code=' + encodeURIComponent(codes[i]);
+        }
       }
+      return src;
     }
-    
-    // Add theme parameter based on initial theme
-    iframe_src = addThemeToUrl(iframe_src);
 
     var iframe = document.getElementById('live-iframe');
     var loader = document.getElementById('repl-loader');
@@ -114,7 +113,15 @@
         fallbackTimer = window.setTimeout(revealIframe, 3500);
       });
 
-      iframe.src = iframe_src;
+      iframe.src = addThemeToUrl(getIframeSrc(sympyVersions[versionPicker.value]));
+    }
+
+    if (versionPicker) {
+      versionPicker.addEventListener('change', function() {
+        if (iframe) {
+          iframe.src = addThemeToUrl(getIframeSrc(sympyVersions[versionPicker.value]));
+        }
+      });
     }
   });
 
@@ -148,6 +155,13 @@
 {% block content %}
   <div class="title-bar">
     <h1 class="title-text">SymPy Live</h1>
+    <label class="version-picker">
+      <span class="sr-only">SymPy version</span>
+      <select id="sympy-version" aria-label="SymPy version">
+        <option value="stable" {% if not is_dev %}selected{% endif %}>Stable</option>
+        <option value="dev" {% if is_dev %}selected{% endif %}>Development (nightly)</option>
+      </select>
+    </label>
     <button class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
       <i class="fa-solid" aria-hidden="true"></i>
       <span class="sr-only">Toggle theme</span>

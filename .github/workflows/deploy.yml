@@ -32,10 +32,20 @@ jobs:
       - name: Download latest stable SymPy wheel
         run: |
           mkdir -p custom_wheels
+          rm -f custom_wheels/sympy-*.whl
           python -m pip download sympy \
-          --only-binary=:all: \
-          --no-deps \
-          --dest custom_wheels
+            --only-binary=:all: \
+            --no-deps \
+            --dest custom_wheels
+
+      - name: Download latest nightly SymPy wheel
+        run: |
+          python -m pip download sympy \
+            --pre \
+            --index-url https://pypi.anaconda.org/scientific-python-nightly-wheels/simple \
+            --only-binary=:all: \
+            --no-deps \
+            --dest custom_wheels
 
       - name: Reduce the size of the wheel
         run: pipx run unvendor_tests_from_wheel.py custom_wheels/

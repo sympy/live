@@ -8,6 +8,7 @@ and deployed as a static site to GitHub Pages.
 ## ✨ Try it in your browser ✨
 
 - **https://live.sympy.org/**
+- **https://live.sympy.org/dev/** (development/nightly SymPy)
 
 Other interesting URLs:
 - https://www.sympy.org/en/shell.html
@@ -42,7 +43,7 @@ In addition to the above, the SymPy Live shell depends on the following customiz
 
 > [!NOTE]
 > Pyodide might not have the latest version of SymPy available in PyPI. The [version of SymPy available in Pyodide](https://github.com/pyodide/pyodide/tree/main/packages/sympy) is updated only when a new version of Pyodide is released. This can take a considerable amount of time, which means that it can get outdated.
-> Therefore, we ensure that the version of SymPy used in the SymPy Live Shell is up-to-date by running the `pip download sympy --no-deps` command before deployment, which downloads the latest version of SymPy from PyPI and stores it in `custom_wheels/`. This directory is indexed by JupyterLite via the `jupyter_lite_config.json` file to make the wheel available to the Pyodide kernel for the REPL app for installation.
+> Therefore, the stable version is downloaded from PyPI and the development version from the [scientific-python nightly wheel index](https://pypi.anaconda.org/scientific-python-nightly-wheels/simple) before deployment. Both wheels are stored in `custom_wheels/`, which is indexed by JupyterLite via the `jupyter_lite_config.json` file. The version selector on each landing page installs the selected wheel into the shared REPL.
 > It is still recommended to keep updating the SymPy version in Pyodide to the latest version to ensure that the SymPy Live Shell is always up-to-date, so that we don't have to run the `pip download` command before every deployment.
 
 
@@ -53,10 +54,10 @@ Deployment to production is automated by the Github actions workflow [deploy.yml
 which performs the following steps:
 
 1. Installs Python and dependencies listed in `requirements.txt`
-2. Runs the `pip download sympy --no-deps --dest custom_wheels` command and stores the wheel in `custom_wheels/`. This directory is indexed by JupyterLite via the [`jupyter_lite_config.json`](jupyter_lite_config.json) file to make the wheel available to the Pyodide kernel for the REPL app.
+2. Downloads the latest stable SymPy wheel from PyPI and the latest development wheel from the [scientific-python nightly wheel index](https://pypi.anaconda.org/scientific-python-nightly-wheels/simple), storing both in `custom_wheels/`. This directory is indexed by JupyterLite via the [`jupyter_lite_config.json`](jupyter_lite_config.json) file to make both wheels available to the Pyodide kernel.
 3. Runs `unvendor_tests_from_wheel.py custom_wheels` to remove the tests from the downloaded wheel, reducing its size.
 4. Runs the command `jupyter lite build` to build the JupyterLab static site, placing the results in `_output/`.
-5. Runs `generate_index.py` to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
+5. Runs `generate_index.py` to create the stable landing page at `_output/index.html` and the development landing page at `_output/dev/index.html`, both using the same JupyterLite REPL build.
 6. Adds the file `_output/CNAME` containing `live.sympy.org`.
 7. Deploys the contents of `_output` to GitHub pages (`gh-pages` branch hosted at https://live.sympy.org).
 
@@ -66,21 +67,23 @@ The last step (deploy to `gh-pages`) runs only on pushes to the `main` branch.
 ### Running locally
 
 The local development steps are similar to the production steps,
-but you'll run local web server to view the static files in `_output`,
-and modify one line in `templates/index.html` to load the iframe from localhost (127.0.0.1):
+but you'll run a local web server to view the static files in `_output`.
+The landing page loads the REPL from the same origin, so no source changes are needed:
 
 1. Install Python and dependencies listed in `requirements.txt`
-2. Download latest stable SymPy wheel:
+2. Download the latest stable and nightly SymPy wheels:
 
    ```bash
     mkdir -p custom_wheels
-    python -m pip download sympy --only-binary=:all: --no-deps --dest custom_wheels
+   rm -f custom_wheels/sympy-*.whl
+   python -m pip download sympy --only-binary=:all: --no-deps --dest custom_wheels
+    python -m pip download sympy --pre --index-url https://pypi.anaconda.org/scientific-python-nightly-wheels/simple --only-binary=:all: --no-deps --dest custom_wheels
    ```
 
-   This wheel will be indexed by JupyterLite via the `jupyter_lite_config.json` file and made available to the Pyodide kernel for the REPL app for installation.
+   These wheels will be indexed by JupyterLite via the `jupyter_lite_config.json` file and made available to the Pyodide kernel for installation.
 3. Optionally, run `unvendor_tests_from_wheel.py custom_wheels` with a PEP 723 compatible script runner such as `pipx`, `uv`, `hatch`, etc. to remove the tests from the downloaded wheel, reducing its size.
 4. Run the command `jupyter lite build` to build the JupyterLab static site, placing the results in `_output/`.
-5. Run `generate_index.py` with a PEP 723 compatible script runner such as `pipx`, `uv`, `hatch`, etc. to overwrite the index file `_output/index.html` with the custom SymPy Live Shell landing page.
+5. Run `generate_index.py` with a PEP 723 compatible script runner such as `pipx`, `uv`, `hatch`, etc. to create the stable landing page at `_output/index.html` and the development landing page at `_output/dev/index.html`.
 6. Run a local web server in the directory `_output/`. For example, you can run `cd _output/` followed by `python3 -m http.server 8000`.
 7. Open `http://127.0.0.1:8000/index.html` in your browser.
 
@@ -92,4 +95,3 @@ For more info, keep an eye on the JupyterLite documentation:
 
 - Configuring: https://jupyterlite.readthedocs.io/en/stable/quickstart/configure.html
 - Deploying to GitHub pages: https://jupyterlite.readthedocs.io/en/stable/quickstart/deploy.html
-

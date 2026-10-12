@@ -470,8 +470,21 @@ footer a:active {
   margin: 0;
 }
 
-#content .title-bar .theme-toggle {
+#content .title-bar .version-picker {
   margin-left: auto;
+}
+
+#content .title-bar .version-picker select {
+  font: inherit;
+  color: inherit;
+  background: var(--content-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.25em;
+  max-width: 100%;
+}
+
+#content .title-bar .theme-toggle {
   font: inherit;
   line-height: 1;
   padding: 0 0.15em;
