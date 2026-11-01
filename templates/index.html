@@ -11,7 +11,10 @@
     "init_printing()",
     "x, y, z, t = symbols('x y z t')",
     "k, m, n = symbols('k m n', integer=True)",
-    "f, g, h = symbols('f g h', cls=Function)"
+    "f, g, h = symbols('f g h', cls=Function)",
+    "from sympy.interactive.session import _make_message",
+    "print(_make_message())",
+    "del _make_message"
 ]) %}
 
 {% block title %}SymPy Live Shell{% endblock %}
