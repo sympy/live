@@ -1,0 +1,269 @@
+.theme-text {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+#main .block .content {
+  background: var(--content-bg);
+  padding-top: 1px;
+  max-width: 800px;
+  min-width: 500px;
+  margin-top: 10px;
+}
+
+#main .block .content h2 {
+  margin-left: 15px;
+}
+
+#user-navigation ul li a:link {
+  color: var(--link-color);
+}
+
+#user-navigation ul li a:visited {
+  color: var(--link-visited);
+}
+
+#user-navigation ul li a:active {
+  color: var(--link-color);
+}
+
+#user-navigation ul li a:hover {
+  color: #fff;
+}
+
+.secondary-navigation {
+  background: #3b5526;
+  border-bottom: 5px solid #81b953;
+}
+
+.secondary-navigation ul li a {
+  display: block;
+  padding: 8px 12px;
+}
+
+.secondary-navigation ul li.active {
+  background: #81b953;
+  font-weight: bold;
+}
+
+.secondary-navigation ul li.active a:hover {
+  background-color: #81b953;
+}
+
+.secondary-navigation li a:hover {
+  background: #81b953;
+}
+
+.secondary-navigation ul li a:link,
+.secondary-navigation ul li a:visited,
+.secondary-navigation ul li a:hover,
+.secondary-navigation ul li a:active {
+  text-decoration: none;
+  color: #fff;
+}
+
+#quicklinks ul {
+  padding-left: 20px;
+}
+
+/* Tables */
+.table th {
+  background: #253618;
+  color: #fff;
+  padding: 5px;
+}
+
+.table td {
+  border-bottom: 1px solid #f0f0ee;
+}
+
+.table tr.odd {
+  background: #ebfadf;
+}
+
+.table tr.even {
+  background: #d3e8c1;
+}
+
+/* Forms */
+.form input.text_field,
+.form textarea.text_area {
+  width: 100%;
+  border: 1px solid #262626;
+}
+
+.form input.button {
+  background: #eee;
+  color: #262626;
+  padding: 2px 5px;
+  border: 1px solid #262626;
+  cursor: pointer;
+}
+
+.form .description {
+  font-style: italic;
+  color: #8c8c8c;
+  font-size: 0.9em;
+}
+
+/* Lists */
+ul.list li {
+  border-bottom: 1px solid #f0f0ee;
+}
+
+ul.list li .item .avatar {
+  border: 1px solid #f0f0ee;
+  padding: 2px;
+}
+
+/* Dropdowns */
+.dropdown {
+  border-bottom: 2px dotted #ccc;
+  padding-bottom: 0.5em;
+}
+
+.dropdown h3 {
+  cursor: pointer;
+}
+
+.dropdown h3:before {
+  font-family: FontAwesome;
+  content: "\f107";
+  margin-right: 0.25em;
+  display: inline-block;
+}
+
+.dropdown.open h3:before {
+  transform: rotate(180deg);
+}
+
+.dropdown div {
+  display: none;
+  transition: all 300ms ease-out;
+  overflow: hidden;
+}
+
+.dropdown.open div {
+  display: block;
+}
+
+/* Gallery */
+.gallery figure {
+  display: inline-block;
+  width: 24%;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.gallery figure:hover {
+  border: 1px solid #999;
+}
+
+.gallery figure img {
+  width: 100%;
+  height: 100px;
+}
+
+.gallery figure figcaption {
+  display: block;
+  max-width: 90%;
+  margin: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gallery figure figcaption code {
+  white-space: pre;
+}
+
+/* Slideshow */
+#slideshow {
+  z-index: 1000;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  color: #fff;
+}
+
+#slideshow img {
+  max-height: 80%;
+  margin: 5% auto 0;
+  display: block;
+}
+
+#slideshow p {
+  width: 80%;
+  text-align: center;
+  font-size: 1.5em;
+  margin: auto;
+  display: block;
+}
+
+#slideshow p code {
+  text-align: left;
+  white-space: pre;
+  display: block;
+  color: #000;
+  background: #ddd;
+  margin: 0.5em 0;
+}
+
+#slideshow button.close {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2em;
+}
+
+/* Banner styles */
+#banner {
+  background: #3b5526;
+  color: #fff;
+  border-radius: 7px;
+  padding: 0.25em 0.5em;
+  border: 1px solid #ccc;
+  margin-bottom: 1em;
+}
+
+#banner h2 {
+  color: #fff;
+  font-size: 1.75em;
+  font-weight: 300;
+  margin: 0.1em 0;
+}
+
+#banner a:link {
+  color: var(--link-color);
+}
+
+#banner a:visited {
+  color: var(--link-visited);
+}
+
+#banner a:hover,
+#banner a:active {
+  color: var(--link-color);
+}
+
+#get-started a {
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  background: #370c19;
+  color: #fff !important;
+  border-radius: 3px;
+  transition: all 0.3s ease-in-out;
+}
+
+#get-started a:hover {
+  background: #552634;
+}
+
+.inner {
+  margin: 0.25em 0 0.5em 0;
+}
